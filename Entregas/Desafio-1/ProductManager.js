@@ -22,9 +22,7 @@ class ProductManager {
         code: code,
         stock: stock,
       });
-    }
-    else
-        console.log('Error. No pudo agregarse el producto')
+    } else console.log("Error. No pudo agregarse el producto");
   }
 
   getProducts() {

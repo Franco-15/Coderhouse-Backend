@@ -99,7 +99,11 @@ const main = async () => {
     25
   );
   console.log(await manager.getProductByID(2));
-  await manager.updateProduct(2, "title", "producto prueba actualizado 2 veces");
+  await manager.updateProduct(
+    2,
+    "title",
+    "producto prueba actualizado 2 veces"
+  );
   console.log(await manager.getProductByID(2));
 
   await manager.deleteProduct(2);

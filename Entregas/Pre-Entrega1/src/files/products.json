@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "title": "product1",
+        "description": "description product1",
+        "code": "a1",
+        "price": 400,
+        "status": true,
+        "stock": 50,
+        "category": "azar",
+        "thumbnails": []
+    },
+    {
+        "id": 2,
+        "title": "product2",
+        "description": "description product2",
+        "code": "a2",
+        "price": 440,
+        "status": false,
+        "stock": 0,
+        "category": "azar",
+        "thumbnails": []
+    },
+    {
+        "id": 4,
+        "title": "produc5",
+        "description": "description produc52",
+        "code": "a3",
+        "price": 40,
+        "status": true,
+        "stock": 10,
+        "category": "azar",
+        "thumbnails": [
+            "./public/foto",
+            "./publicvideo/video1"
+        ]
+    }
+]

@@ -10,8 +10,8 @@ const cmanager = new CartManager(CART_PATH);
 const cartsRouter = Router();
 
 cartsRouter.get("/:cid", async (req, res) => {
-    const id = req.params.id;
-    const cartProducts = await cmanager.getCartByID(id);
+    const cid = req.params.cid;
+    const cartProducts = await cmanager.getCartByID(cid);
 
     if (cartProducts !== -1)
         res.status(200).send({

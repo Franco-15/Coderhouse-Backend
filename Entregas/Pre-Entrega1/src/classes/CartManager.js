@@ -9,7 +9,7 @@ export default class CartManager {
     async createCart(products) {
         const carts = await this.getCarts();
 
-        let cid = carts.length > 0 ? carts[carts.length - 1].cid + 1 : 1;
+        let cid = carts.length > 0 ? carts[carts.length - 1].id + 1 : 1;
 
         let cart = {
             id: cid,

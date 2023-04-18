@@ -1,0 +1,23 @@
+<h1>
+    Lista de productos
+</h1>
+<div id="products">
+    <ul>
+        {{#each products.payload}}
+        <li>
+            <div id={{this.id}}>
+                <p>{{this.title}}</p>
+                <p>${{this.price}}</p>
+                <p>Cantidad Disponibles: {{this.stock}}</p>
+                <br>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+<div>
+    <button id="prevPage",type="button">Prev Page</button>
+    <button id="nextPage",type="button">Next Page</button>
+</div>
+
+<script src="/js/products.js"></script>

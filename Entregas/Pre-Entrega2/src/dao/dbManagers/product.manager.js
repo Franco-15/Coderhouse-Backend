@@ -46,8 +46,8 @@ export default class ProductManager {
                 page: productsDB.page,
                 hasPrevPage: productsDB.hasPrevPage,
                 hasNextPage: productsDB.hasNextPage,
-                prevLink: productsDB.hasPrevPage ? `/api/products?page=${productsDB.prevPage}` : null,
-                nextLink: productsDB.hasNextPage ? `/api/products?page=${productsDB.nextPage}` : null,
+                prevLink: productsDB.hasPrevPage ? `./products?page=${productsDB.prevPage}` : null,
+                nextLink: productsDB.hasNextPage ? `./products?page=${productsDB.nextPage}` : null,
             };  
         } catch (error) {
             throw new Exception(404, {

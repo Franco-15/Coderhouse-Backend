@@ -30,7 +30,7 @@ export default class CartManager {
         try {
             const cartFromID = await cartsModel
                 .findById(cid)
-                .populate("products.product");
+                .populate("products.product").lean();
             return cartFromID;
         } catch (error) {
             throw new Exception(404, {

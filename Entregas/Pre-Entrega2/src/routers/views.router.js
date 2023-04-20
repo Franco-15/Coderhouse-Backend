@@ -1,9 +1,11 @@
 import { Router } from "express"
 // import fs from "fs"
 import ProductManager from "../dao/dbManagers/product.manager.js"
+import CartManager from "../dao/dbManagers/cart.manager.js"
 
 const viewsRouter = Router()
 const productManager = new ProductManager()
+const cartManager = new CartManager()
 
 // viewsRouter.get('/', async (req, res) => {
 //     let products = []
@@ -54,6 +56,29 @@ viewsRouter.get('/products', async (req, res) => {
     }
 
     res.render('products', infoRender)
+})
+
+viewsRouter.get('/cart/:cid', async (req, res) => {
+    const cid = req.params.cid
+
+    try{
+        const cart = await cartManager.getCartByID(cid)
+
+        if(cart){
+            res.render('cart', {cart})
+        }else{
+            res.status(404).send({
+                status: "error",
+                message: "Not found cart",
+            })
+        }
+
+    }catch(error){
+        console.log({
+            status: error.status,
+            message: error.message,
+        })
+    }
 })
 
 export default viewsRouter

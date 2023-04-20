@@ -35,12 +35,25 @@ viewsRouter.get('/products', async (req, res) => {
 
     try{
         products = await productManager.getProducts(limit, page, sort, category, status)
-        
     }catch(err){
         console.log(err)
     }
-    
-    res.render('products', {products})
+
+    const infoRender = {
+        products: products.payload,
+        totalPages: products.totalPages,
+        hasPrevPAge: products.hasPrevPage,
+        hasNextPage: products.hasNextPage,
+        prevPage:  products.prevPage,
+        nextPage: products.nextPage,
+        limit: limit ? parseInt(limit) : 10,
+        page: page ? parseInt(page) : 1,
+        sort: sort ? parseInt(sort) : 1,
+        category: category ? category : undefined,
+        status: status ? status : undefined,
+    }
+
+    res.render('products', infoRender)
 })
 
 export default viewsRouter

@@ -81,4 +81,27 @@ viewsRouter.get('/cart/:cid', async (req, res) => {
     }
 })
 
+viewsRouter.get('/product/:pid', async (req, res) => {
+    const pid = req.params.pid
+
+    try{
+        const product = await productManager.getProductByID(pid)
+
+        if(product){
+            res.render('product', product)
+        }else{
+            res.status(404).send({
+                status: "error",
+                message: "Not found product",
+            })
+        }
+
+    }catch(error){
+        console.log({
+            status: error.status,
+            message: error.message,
+        })
+    }
+});
+
 export default viewsRouter

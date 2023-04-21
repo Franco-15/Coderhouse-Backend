@@ -1,12 +1,11 @@
 async function getProducts() {
-    const response = await fetch("./api/products");
+    const response = await fetch("/api/products");
     const data = await response.json();
     return data;
 }
 
 function addProductToCart(cid, pid) {
     let product = document.getElementById(`addtoCart-${pid}`);
-    console.log(product);
 
     if (product)
         product.onclick = (e) => {
@@ -18,7 +17,7 @@ function addProductToCart(cid, pid) {
 
             //Hardcoded cart id
 
-            fetch(`./api/carts/${cid}/product/${pid}`, {
+            fetch(`/api/carts/${cid}/product/${pid}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,11 +55,10 @@ const main = async () => {
     let products = await getProducts();
 
     const idProducts = products.payload.map((product) => product.id);
-    console.log(idProducts);
     idProducts.forEach((pid) => {
         //Hardcoded cart id
         const cid = "643d59a288b55263f2ade028";
-
+        
         addProductToCart(cid, pid);
         deleteProductFromCart(cid, pid);
     });

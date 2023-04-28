@@ -22,9 +22,9 @@ sessionRouter.post("/register", async (req, res) => {
             password,
         };
         await userModel.create(user);
-        return res.send({ status: "sucess", message: "user registered" });
+        return res.send({ status: "success", message: "user registered" });
     } catch (error) {
-        console.log(error);
+        res.send({ status: "error", message: "register error"});
     }
 });
 

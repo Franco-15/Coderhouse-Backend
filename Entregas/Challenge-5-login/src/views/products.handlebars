@@ -1,0 +1,53 @@
+<h1>Bienvenido {{user.name}}!</h1>
+<div>
+    <h2>User data</h2>
+    <ul>
+        <li>Email: {{user.email}}</li>
+        <li>Rol: {{user.rol}}</li>
+    </ul>
+</div>
+
+<h2>
+    Lista de productos
+</h2>
+<div id="products">
+    <ul>
+        {{#each products}}
+        <li>
+            <div id={{this.id}}>
+                <p>{{this.title}}</p>
+                <p>${{this.price}}</p>
+                <p>Cantidad Disponibles: {{this.stock}}</p>
+                <button id="addtoCart-{{this.id}}" ,>Agregar al carrito</button>
+                <button id="deleteProduct-{{this.id}}" ,>Eliminar</button>
+                <a href="/product/{{this.id}}">
+                    <button>Detalles del producto</button>
+                </a>
+                <br>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+<div>
+    {{#if hasPrevPAge}}
+    <a href="/products?page={{prevPage}}&limit={{limit}}&sort={{sort}}&category={{category}}&status={{status}}">
+        <button type="button">PrevPage</button>
+    </a>
+    {{else}}
+    <button type="button" disabled>PrevPage</button>
+    {{/if}}
+    {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}&limit={{limit}}&sort={{sort}}&category={{category}}&status={{status}}">
+        <button type="button">NextPage</button>
+    </a>
+    {{else}}
+    <button type="button" disabled>NextPage</button>
+    {{/if}}
+</div>
+<div>
+    <button id="logout">Cerrar Sesion</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/products.js"></script>
+    <script src="/js/logout.js"></script>

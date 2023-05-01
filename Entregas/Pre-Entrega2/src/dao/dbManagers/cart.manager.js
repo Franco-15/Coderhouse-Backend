@@ -30,7 +30,8 @@ export default class CartManager {
         try {
             const cartFromID = await cartsModel
                 .findById(cid)
-                .populate("products.product").lean();
+                .populate("products.product")
+                .lean();
             return cartFromID;
         } catch (error) {
             throw new Exception(404, {
@@ -42,15 +43,25 @@ export default class CartManager {
 
     async addProduct(cid, pid, quantity) {
         try {
-            await cartsModel.updateOne(
-                { _id: cid },
-                { $push: { products: { product: pid, quantity: quantity } } }
-            );
-        } catch (error) {
-            throw new Exception(502, {
-                status: "error",
-                message: "Error adding product to cart",
+            const productExist = await cartsModel.findOne({
+                products: { $elemMatch: { product: pid } },
             });
+            
+            if (!productExist) {
+                const updatedCart = await cartsModel.updateOne(
+                    { _id: cid },
+                    { $push: { products: [{ product: pid, quantity }] } }
+                );
+                return updatedCart;
+            }
+            const updatedCart = await cartsModel.updateOne(
+                { _id: cid },
+                { $inc: { "products.$[elem].quantity": quantity } },
+                { arrayFilters: [{ "elem.product": pid }] }
+            );
+            return updatedCart;
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -103,16 +114,16 @@ export default class CartManager {
     async updateProduct(cid, pid, quantity) {
         try {
             await cartsModel.updateOne(
-            {
-                _id: cid,
-                "products.product":pid // Busca el producto con el id pid dentro del carrito cid
-            },
-            {
-                $set: {
-                    "products.$.quantity":quantity // Actualiza la cantidad del producto encontrada
+                {
+                    _id: cid,
+                    "products.product": pid, // Busca el producto con el id pid dentro del carrito cid
+                },
+                {
+                    $set: {
+                        "products.$.quantity": quantity, // Actualiza la cantidad del producto encontrada
+                    },
                 }
-            }
-        );
+            );
         } catch (error) {
             throw new Exception(500, {
                 status: "error",

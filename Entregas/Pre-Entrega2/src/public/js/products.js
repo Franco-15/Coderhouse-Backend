@@ -12,10 +12,8 @@ function addProductToCart(cid, pid) {
             e.preventDefault();
 
             const product = {
-                id: pid,
+                quantity: 1,
             };
-
-            //Hardcoded cart id
 
             fetch(`/api/carts/${cid}/product/${pid}`, {
                 method: "POST",
@@ -58,7 +56,7 @@ const main = async () => {
     idProducts.forEach((pid) => {
         //Hardcoded cart id
         const cid = "643d59a288b55263f2ade028";
-        
+
         addProductToCart(cid, pid);
         deleteProductFromCart(cid, pid);
     });

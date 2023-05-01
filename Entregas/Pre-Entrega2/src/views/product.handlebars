@@ -11,7 +11,12 @@
         {{#each this.thumbnails}}
         <img src="{{this}}" alt="img" />
         {{/each}}
+        <br />
+        {{#if this.stock}}
         <button id="addtoCart-{{this.id}}" ,>Agregar al carrito</button>
+        {{else}}
+            <p>Sin stock</p>
+        {{/if}}
         <br />
     </div>
 </div>

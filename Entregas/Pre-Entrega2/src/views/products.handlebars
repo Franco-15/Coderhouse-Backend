@@ -9,7 +9,11 @@
                 <p>{{this.title}}</p>
                 <p>${{this.price}}</p>
                 <p>Cantidad Disponibles: {{this.stock}}</p>
+                {{#if this.stock}}
                 <button id="addtoCart-{{this.id}}", >Agregar al carrito</button>
+                {{else}}
+                <button disabled>Agregar al carrito</button>
+                {{/if}}
                 <button id="deleteProduct-{{this.id}}", >Eliminar</button>
                 <a href="/product/{{this.id}}">
                     <button>Detalles del producto</button>

@@ -46,7 +46,7 @@ cartsRouter.post("/", async (req, res) => {
 cartsRouter.post("/:cid/product/:pid", async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
-
+    
     try {
         await cmanager.addProduct(cid, pid, quantity);
         res.status(201).send({
@@ -106,8 +106,6 @@ cartsRouter.put("/:cid/product/:pid", async (req, res) => {
 cartsRouter.put("/:cid", async(req,res) =>{
     const cid = req.params.cid
     const products = req.body
-
-    console.log(products)
 
     try{
         await cmanager.updateCart(cid, products)

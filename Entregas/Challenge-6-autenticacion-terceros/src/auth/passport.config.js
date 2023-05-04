@@ -13,37 +13,37 @@ const initializePassport = () => {
     passport.use(
         "register",
         new LocalStrategy(
-          {
-            passReqToCallback: true,
-            usernameField: "email",
-          },
-          async (req, username, password, done) => {
-            try {
-              const { first_name, last_name, email, age } = req.body;
-    
-              let user = await userModel.findOne({ email: username });
-              if (user) {
-                console.log("User already exists");
-                return done(null, false);
-              }
-    
-              const newUser = {
-                first_name,
-                last_name,
-                email,
-                age,
-                password: createHash(password),
-              };
-    
-              let result = await userModel.create(newUser);
-    
-              return done(null, result);
-            } catch (error) {
-              return done("Error when trying to find user:" + error);
+            {
+                passReqToCallback: true,
+                usernameField: "email",
+            },
+            async (req, username, password, done) => {
+                try {
+                    const { first_name, last_name, email, age } = req.body;
+                    let user = await userModel.findOne({ email: username });
+                    if (user) {
+                        return done(null, false, {
+                            message: "User already exists",
+                        });
+                    }
+
+                    const newUser = {
+                        first_name,
+                        last_name,
+                        email,
+                        age,
+                        password: createHash(password),
+                    };
+
+                    let userCreated = await userModel.create(newUser);
+                    return done(null, userCreated);
+                } catch (error) {
+                    console.log(error);
+                    return done(error);
+                }
             }
-          }
         )
-      );
+    );
 
     passport.use(
         "login",
@@ -61,7 +61,10 @@ const initializePassport = () => {
                 let user;
 
                 try {
-                    if (username === admin.email && password === admin.password) {
+                    if (
+                        username === admin.email &&
+                        password === admin.password
+                    ) {
                         user = {
                             first_name: admin.name,
                             last_name: "",
@@ -73,30 +76,18 @@ const initializePassport = () => {
                         let userDB = await userModel.findOne({
                             email: username,
                         });
-                        if (!userDB) {
-                            console.log("User not found");
-                            return done(null, false, {
-                                message: "User not found",
-                            });
-                        }
-                        if (!isValidPassword(password, userDB)) {
-                            console.log("Invalid password");
-                            return done(null, false, {
-                                message: "Invalid password",
-                            });
-                        }
+                        if (!userDB) return done(null, false);
+
+                        if (!isValidPassword(userDB, password))
+                            return done(null, false);
 
                         user = {
-                            first_name: userDB.first_name, 
-                            last_name: userDB.last_name,
-                            email: userDB.email,
-                            age: userDB.age,
+                            ...userDB._doc,
                             rol: "user",
                         };
                     }
                     return done(null, user);
                 } catch (error) {
-                    console.log(error);
                     return done(error);
                 }
             }
@@ -117,7 +108,7 @@ const initializePassport = () => {
                     let user = await userModel.findOne({
                         email: profile._json.email,
                     });
-        
+
                     if (!user) {
                         let newUser = {
                             first_name: profile._json.name,
@@ -130,7 +121,7 @@ const initializePassport = () => {
                         let result = await userModel.create(newUser);
                         return done(null, { ...result._doc, rol: "user" });
                     }
-    
+
                     return done(null, { ...user._doc, rol: "user" });
                 } catch (error) {
                     return done(error);
@@ -140,6 +131,7 @@ const initializePassport = () => {
     );
 
     passport.serializeUser((user, done) => {
+        console.log("Serialize", user._id);
         done(null, user._id);
     });
 

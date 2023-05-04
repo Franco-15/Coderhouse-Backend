@@ -1,5 +1,4 @@
 import { Router } from "express";
-import userModel from "../dao/models/user.model.js";
 import passport from "passport";
 
 const sessionRouter = Router();
@@ -8,7 +7,7 @@ sessionRouter.post(
     "/register",
     passport.authenticate("register", { failureRedirect: "./failregister" }),
     async (req, res) => {
-        res.send({ status: "success", message: "User created" });
+        return res.send({ status: "success", message: "user registered" });
     }
 );
 
@@ -18,7 +17,7 @@ sessionRouter.get("/failregister", (req, res) => {
 
 sessionRouter.post(
     "/login",
-    passport.authenticate("login", ),
+    passport.authenticate("login", { failureRedirect: "./faillogin" }),
     async (req, res) => {
         if (!req.user)
             return res

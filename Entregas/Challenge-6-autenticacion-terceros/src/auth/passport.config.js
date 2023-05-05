@@ -104,7 +104,6 @@ const initializePassport = () => {
             },
             async (accessToken, refreshToken, profile, done) => {
                 try {
-                    // console.log(profile);
                     let user = await userModel.findOne({
                         email: profile._json.email,
                     });
@@ -131,7 +130,6 @@ const initializePassport = () => {
     );
 
     passport.serializeUser((user, done) => {
-        console.log("Serialize", user._id);
         done(null, user._id);
     });
 

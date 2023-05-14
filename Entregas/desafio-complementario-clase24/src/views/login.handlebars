@@ -1,0 +1,29 @@
+<div class="loginContainer">
+  <div class="login">
+    <h1 class="loginTitle">Login</h1>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Contraseña</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+
+    <p>¿No estás registrado? <a href="/register">Regístrate aquí</a></p>
+
+    <div class="thirdsLogin">
+      <a href="/api/sessions/github/">
+        <button class="github"><img class="githubImg"
+            src="https://res.cloudinary.com/dgk9fa4rw/image/upload/v1684095231/ImgAppReact/img/github_q86q9w.png">Ingresar
+          con GitHub</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/login.js"></script>

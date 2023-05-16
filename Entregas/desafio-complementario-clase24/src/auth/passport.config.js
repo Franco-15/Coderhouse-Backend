@@ -37,7 +37,7 @@ const initializePassport = () => {
                         age,
                         role: "user",
                         password: createHash(password),
-                        cartId: newCart._id
+                        cartId: newCart._id,
                     };
 
                     let userCreated = await userModel.create(newUser);
@@ -57,40 +57,15 @@ const initializePassport = () => {
                 usernameField: "email",
             },
             async (username, password, done) => {
-                const admin = {
-                    email: "adminCoder@coder.com",
-                    password: "adminCod3r123",
-                    name: "Admin Coder",
-                };
-
-                let user;
-
                 try {
-                    if (
-                        username === admin.email &&
-                        password === admin.password
-                    ) {
-                        user = {
-                            first_name: admin.name,
-                            last_name: "",
-                            email: admin.email,
-                            age: undefined,
-                            rol: "admin",
-                        };
-                    } else {
-                        let userDB = await userModel.findOne({
-                            email: username,
-                        });
-                        if (!userDB) return done(null, false);
+                    let user = await userModel.findOne({
+                        email: username,
+                    });
+                    if (!user) return done(null, false);
 
-                        if (!isValidPassword(userDB, password))
-                            return done(null, false);
+                    if (!isValidPassword(user, password))
+                        return done(null, false);
 
-                        user = {
-                            ...userDB._doc,
-                            rol: "user",
-                        };
-                    }
                     return done(null, user);
                 } catch (error) {
                     return done(error);

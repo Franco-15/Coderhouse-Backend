@@ -22,13 +22,18 @@ sessionRouter.post(
         if (!req.user)
             return res
                 .status(400)
-                .send({ status: "error", error: "User not found" });
+                .send({ status: "error", error: "User not logged" });
 
         req.session.user = req.user;
+        let user = req.session.user;
+        
+        user.password = undefined;
+        user.cartId = undefined;
+        
         res.send({
             status: "success",
             message: "Logged In",
-            payload: req.session.user,
+            payload: user,
         });
     }
 );

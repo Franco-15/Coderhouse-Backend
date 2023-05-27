@@ -14,7 +14,7 @@ class ProductsService {
                 category,
                 status
             );
-            return products;
+            return products.payload;
         }
         catch (error) {
             throw error;

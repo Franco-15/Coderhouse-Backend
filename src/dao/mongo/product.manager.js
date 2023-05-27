@@ -1,6 +1,5 @@
-import fs from "fs";
 import Exception from "../../exceptions.js";
-import productsModel from "../models/products.model.js";
+import productsModel from "./models/products.model.js";
 
 export default class ProductManager {
 
@@ -10,7 +9,7 @@ export default class ProductManager {
         } catch (error) {
             throw new Exception(500, {
                 status: "error",
-                message: error.message,
+                message: "Error adding product",
             });
         }
     }
@@ -22,7 +21,6 @@ export default class ProductManager {
             page: parseInt(page) || 1,
             limit: parseInt(limit) || 10,
             sort: {price:parseInt(sort)} || undefined,
-            
         };
 
         const query = {};
@@ -50,22 +48,21 @@ export default class ProductManager {
                 nextLink: productsDB.hasNextPage ? `./products?page=${productsDB.nextPage}` : null,
             };  
         } catch (error) {
-            throw new Exception(404, {
+            throw new Exception(500, {
                 status: "error",
-                message: error.message,
+                message: "Error getting products ",
             });
         }
     }
 
-    async getProductByID(pid) {
+    async getProductById(pid) {
         try {
             const product = await productsModel.findOne({ _id: pid});
-            console.log(product);
             return product;
         } catch (error) {
-            throw new Exception(404, {
+            throw new Exception(500, {
                 status: "error",
-                message: error.message,
+                message: "Error getting product",
             });
         }
     }

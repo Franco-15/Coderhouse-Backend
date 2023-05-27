@@ -1,10 +1,10 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../dao/models/user.model.js";
-import cartModel from "../dao/models/cart.model.js";
+import userModel from "../dao/mongo/models/user.model.js";
+import cartModel from "../dao/mongo/models/cart.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2";
-import config from "../config.js";
+import config from "../config/config.js";
 
 const { clientID, clientSecret, callbackUrl } = config;
 
@@ -87,6 +87,8 @@ const initializePassport = () => {
                     let user = await userModel.findOne({
                         email: profile._json.email,
                     });
+                    
+                    const newCart = await cartModel.create({});
 
                     if (!user) {
                         let newUser = {
@@ -95,6 +97,8 @@ const initializePassport = () => {
                             age: 18,
                             email: profile._json.email,
                             password: "",
+                            role: "user",
+                            cartId: newCart._id,
                         };
 
                         let result = await userModel.create(newUser);

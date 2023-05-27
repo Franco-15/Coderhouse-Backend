@@ -3,7 +3,7 @@
     <h2>User data</h2>
     <ul>
         <li>Email: {{user.email}}</li>
-        <li>Rol: {{user.rol}}</li>
+        <li>Rol: {{user.role}}</li>
     </ul>
 </div>
 
@@ -20,7 +20,7 @@
 </h2>
 <div id="products">
     <ul>
-        {{#each products}}
+        {{#each products.products}}
         <li>
             <div id={{this.id}}>
                 <p>{{this.title}}</p>

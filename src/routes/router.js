@@ -6,9 +6,9 @@ import viewsRouter from "./views.router.js";
 
 export default function routerApi(app) {
     //==== Routes ====
-    // app.use("/", viewsRouter);
+    app.use("/", viewsRouter);
     app.use("/api/products", productsRouter);
     app.use("/api/carts", cartsRouter);
-    // app.use("/api/sessions", sessionRouter);
+    app.use("/api/sessions", sessionRouter);
     app.use("/api/users", usersRouter);
 }

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-    current,
     faillogin,
     failregister,
     githubResponse,
@@ -13,14 +12,14 @@ import passport from "passport";
 const sessionRouter = Router();
 
 sessionRouter.post("/register",
-    passport.authenticate("register", { failureRedirect: "./failregister" }),
+    passport.authenticate("register", {session:false ,failureRedirect: "./failregister" }),
     register
 );
 
 sessionRouter.get("/failregister", failregister);
 
 sessionRouter.post("/login",
-    passport.authenticate("login", { failureRedirect: "./faillogin" }),
+    passport.authenticate("login", {session:false, failureRedirect: "./faillogin" }),
     login
 );
 
@@ -36,7 +35,5 @@ sessionRouter.get("/githubcallback",
     passport.authenticate("github", { failureRedirect: "./faillogin" }),
     githubResponse
 );
-
-sessionRouter.get("/current", current);
 
 export default sessionRouter;

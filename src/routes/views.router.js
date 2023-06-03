@@ -1,19 +1,21 @@
 import { Router } from "express";
-import { checkLogged, checkLogin } from "../middlewares/auth.js";
-import { viewCart, viewLogin, viewMain, viewProduct, viewProducts, viewRegister } from "../controllers/views.controller.js";
+import { viewCart, viewLogin, viewMain, viewProduct, viewProducts, viewRegister, viewCurrent } from "../controllers/views.controller.js";
+import passport from "passport";
 
 const viewsRouter = Router();
 
-viewsRouter.get("/products", checkLogin, viewProducts);
+viewsRouter.get("/products", passport.authenticate("jwt", { session: false} ), viewProducts);
 
-viewsRouter.get("/cart/:cid", checkLogin, viewCart);
+viewsRouter.get("/cart/:cid", viewCart);
 
-viewsRouter.get("/product/:pid", checkLogin, viewProduct);
+viewsRouter.get("/product/:pid", passport.authenticate("jwt", { session: false }), viewProduct);
 
-viewsRouter.get("/login", checkLogged, viewLogin);
+viewsRouter.get("/login", viewLogin);
 
-viewsRouter.get("/register", checkLogged, viewRegister);
+viewsRouter.get("/register", viewRegister);
 
-viewsRouter.get("/", checkLogin, viewMain);
+viewsRouter.get("/", viewMain);
+
+viewsRouter.get("/current", passport.authenticate("jwt", { session: false }), viewCurrent);
 
 export default viewsRouter;

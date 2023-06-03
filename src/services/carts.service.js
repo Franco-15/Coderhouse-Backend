@@ -1,5 +1,6 @@
 import Exception from "../exceptions.js";
 import cartsRepository from "../repositories/carts.repository.js";
+import productsService from "./products.service.js";
 
 class CartsService {
     constructor() {}
@@ -26,8 +27,9 @@ class CartsService {
 
     async addProduct(cid, pid, quantity) {
         try {
-            const productAdded = await cartsRepository.addProduct(cid, pid, quantity);
-            return productAdded;
+            const productAded = await cartsRepository.addProduct(cid, pid, quantity);
+            productsService.updateProduct(pid, { quantity: quantity})
+            return productAded;
         } catch (error) {
             throw error;
         }

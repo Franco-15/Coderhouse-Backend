@@ -20,7 +20,7 @@ function addProductToCart(cid, pid) {
             e.preventDefault();
 
             const product = {
-                quantity: 1,
+                quantity: -1,
             };
 
             fetch(`/api/carts/${cid}/product/${pid}`, {

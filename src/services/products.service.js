@@ -15,8 +15,7 @@ class ProductsService {
                 status
             );
             return products.payload;
-        }
-        catch (error) {
+        } catch (error) {
             throw error;
         }
     }
@@ -43,7 +42,32 @@ class ProductsService {
 
     async updateProduct(id, product) {
         try {
-            const productUpdated = await productsRepository.updateProduct(id, product);
+            const { quantity, thumbnails } = product;
+
+            let newStock = 0;
+            let newStatus = false;
+            let newThumbnails = [];
+
+            const productDB = await productsRepository.getProductById(id);
+            if (quantity) {
+                newStock = productDB.stock + quantity;
+                newStock > 0 ? (newStatus = true) : (newStatus = false);
+            }
+            if (thumbnails) {
+                newThumbnails = productDB.thumbnails.concat(thumbnails);
+            }
+
+            product = {
+                ...product,
+                stock: newStock,
+                status: newStatus,
+                thumbnails: newThumbnails,
+            };
+
+            const productUpdated = await productsRepository.updateProduct(
+                id,
+                product
+            );
             return productUpdated;
         } catch (error) {
             throw error;

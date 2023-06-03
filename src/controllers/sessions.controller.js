@@ -1,4 +1,5 @@
-import passport from "passport";
+import config from "../config/config.js";
+import jwt from "jsonwebtoken";
 
 //===== REGISTER =====
 export async function register(req, res) {
@@ -16,10 +17,14 @@ export async function login(req, res) {
             .status(400)
             .send({ status: "error", error: "User not logged" });
 
-    req.session.user = req.user;
-    let user = req.session.user;
-
+    let user = req.user;
     user.password = undefined;
+
+    let token = jwt.sign({user}, config.jwtSecret, {
+        expiresIn: "24h",
+    });
+
+    res.cookie(config.jwtCookieName, token, { httpOnly: true });
 
     res.send({
         status: "success",
@@ -35,9 +40,7 @@ export async function faillogin(req, res) {
 //===== LOGOUT =====
 export async function logout(req, res) {
     try {
-        req.session.destroy();
-
-        return res.send({
+        return res.clearCookie(config.jwtCookieName).send({
             status: "success",
             message: "logout completed",
         });
@@ -52,21 +55,10 @@ export async function logout(req, res) {
 //===== GITHUB =====
 
 export async function githubResponse(req, res) {
-    req.session.user = req.user;
+    let token = jwt.sign({user}, config.jwtSecret, {
+        expiresIn: "24h",
+    });
+
+    res.cookie(config.jwtCookieName, token, { httpOnly: true });
     res.redirect("/products");
-}
-
-
-//===== CURRENT =====
-export function current(req, res) {
-    if (!req.session.user)
-        return res
-            .status(400)
-            .send({ status: "error", error: "User not logged" });
-    else
-        return res.send({
-            status: "success",
-            message: "User logged",
-            payload: req.session.user,
-        });
 }

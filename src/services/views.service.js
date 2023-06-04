@@ -1,12 +1,12 @@
-import productsRepository from "../repositories/products.repository.js";
-import cartsRepository from "../repositories/carts.repository.js";
+import productsService from "./products.service.js";
+import cartsService from "./carts.service.js";
 
 class ViewsService {
     constructor() {}
 
     async viewProducts(limit, page, sort, category, status) {
         try {
-            const products = await productsRepository.getProducts(
+            const products = await productsService.getProducts(
                 limit,
                 page,
                 sort,
@@ -36,7 +36,7 @@ class ViewsService {
 
     async viewCart(cid) {
         try {
-            const cart = await cartsRepository.getCartByID(cid);
+            const cart = await cartsService.getCartByID(cid);
             return cart;
         } catch (error) {
             throw error;
@@ -45,7 +45,7 @@ class ViewsService {
 
     async viewProduct(pid) {
         try {
-            const product = await productsRepository.getProductById(pid);
+            const product = await productsService.getProductById(pid);
             return product._doc;
         } catch (error) {
             throw error;

@@ -1,4 +1,4 @@
-import productsRepository from "../repositories/products.repository.js";
+import {productsRepository} from '../repositories/index.js';
 
 class ProductsService {
     constructor() {
@@ -14,7 +14,7 @@ class ProductsService {
                 category,
                 status
             );
-            return products.payload;
+            return products;
         } catch (error) {
             throw error;
         }
@@ -44,18 +44,18 @@ class ProductsService {
         try {
             const { quantity, thumbnails } = product;
 
-            let newStock = 0;
-            let newStatus = false;
-            let newThumbnails = [];
-
             const productDB = await productsRepository.getProductById(id);
+
+            let newStock = productDB.stock;
+            let newStatus = productDB.status;
+            let newThumbnails = productDB.thumbnails;
+
             if (quantity) {
-                newStock = productDB.stock + quantity;
+                newStock += quantity;
                 newStock > 0 ? (newStatus = true) : (newStatus = false);
             }
-            if (thumbnails) {
-                newThumbnails = productDB.thumbnails.concat(thumbnails);
-            }
+            if (thumbnails)
+                newThumbnails = thumbnails
 
             product = {
                 ...product,

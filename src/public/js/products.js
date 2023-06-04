@@ -7,7 +7,7 @@ async function getUsers() {
 async function getProducts() {
     const response = await fetch("/api/products");
     const data = await response.json();
-    return data;
+    return data.payload;
 }
 
 function addProductToCart(cid, pid) {
@@ -60,8 +60,10 @@ function deleteProductFromCart(cid, pid) {
 const main = async () => {
     let products = await getProducts();
     let users = await getUsers();
+
     const usersId = users.payload.map((user) => user.cartId);
     const idProducts = products.payload.map((product) => product.id);
+
 
     idProducts.forEach((pid) => {
         usersId.forEach((cid) => {

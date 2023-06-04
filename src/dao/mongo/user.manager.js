@@ -1,7 +1,7 @@
 import userModel from "./models/user.model.js";
 import Exception from "../../exceptions.js";
 
-export default class UserManager {
+class UserManager {
     constructor() {}
     async getUsers(){
         try {
@@ -15,3 +15,5 @@ export default class UserManager {
         }
     };
 }
+
+export const userManager = new UserManager();

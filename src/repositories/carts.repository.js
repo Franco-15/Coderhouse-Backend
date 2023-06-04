@@ -1,13 +1,13 @@
-import CartsManager from "../dao/mongo/cart.manager.js";
 
-class CartsRepository {
-    constructor() {
-        this.cmanager = new CartsManager();
+
+export default class CartsRepository {
+    constructor(persistance) {
+        this.persistance = persistance;
     }
 
     async getCartByID(cid) {
         try {
-            return await this.cmanager.getCartByID(cid);
+            return await this.persistance.getCartByID(cid);
         } catch (error) {
             throw error;
         }
@@ -15,7 +15,7 @@ class CartsRepository {
 
     async createCart(cart) {
         try {
-            return await this.cmanager.createCart(cart);
+            return await this.persistance.createCart(cart);
         } catch (error) {
             throw error;
         }
@@ -23,7 +23,7 @@ class CartsRepository {
 
     async addProduct(cid, pid, quantity) {
         try {
-            return await this.cmanager.addProduct(cid, pid, quantity);
+            return await this.persistance.addProduct(cid, pid, quantity);
         } catch (error) {
             throw error;
         }
@@ -31,7 +31,7 @@ class CartsRepository {
 
     async deleteProduct(cid, pid) {
         try {
-            return await this.cmanager.deleteProduct(cid, pid);
+            return await this.persistance.deleteProduct(cid, pid);
         } catch (error) {
             throw error;
         }
@@ -39,7 +39,7 @@ class CartsRepository {
 
     async deleteAllProducts(cid) {
         try {
-            return await this.cmanager.deleteAllProducts(cid);
+            return await this.persistance.deleteAllProducts(cid);
         } catch (error) {
             throw error;
         }
@@ -47,7 +47,7 @@ class CartsRepository {
 
     async updateProduct(cid, pid, quantity) {
         try {
-            return await this.cmanager.updateProduct(cid, pid, quantity);
+            return await this.persistance.updateProduct(cid, pid, quantity);
         } catch (error) {
             throw error;
         }
@@ -55,11 +55,9 @@ class CartsRepository {
 
     async updateCart(cid, cart) {
         try {
-            return await this.cmanager.updateCart(cid, cart);
+            return await this.persistance.updateCart(cid, cart);
         } catch (error) {
             throw error;
         }
     }
 }
-
-export default new CartsRepository();

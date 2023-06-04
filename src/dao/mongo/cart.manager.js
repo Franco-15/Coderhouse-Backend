@@ -1,7 +1,7 @@
 import cartsModel from "./models/cart.model.js";
 import Exception from "../../exceptions.js";
 
-export default class CartManager {
+class CartManager {
     async createCart(cart) {
         try {
             const cartCreated = cartsModel.create(cart);
@@ -137,3 +137,5 @@ export default class CartManager {
         }
     }
 }
+
+export const cartManager = new CartManager();

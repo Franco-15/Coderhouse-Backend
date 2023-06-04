@@ -1,5 +1,5 @@
 import Exception from "../exceptions.js";
-import cartsRepository from "../repositories/carts.repository.js";
+import { cartsRepository } from "../repositories/index.js";
 import productsService from "./products.service.js";
 
 class CartsService {

@@ -1,13 +1,12 @@
-import ProductManager from "../dao/mongo/product.manager.js";
 
-class ProductsRepository {
-    constructor() {
-        this.pmanager = new ProductManager();
+export default class ProductsRepository {
+    constructor(persistance) {
+        this.persistance = persistance;
     }
 
     async getProducts(limit, page, sort, category, status) {
         try {
-            return await this.pmanager.getProducts(
+            return await this.persistance.getProducts(
                 limit,
                 page,
                 sort,
@@ -21,7 +20,7 @@ class ProductsRepository {
 
     async getProductById(id) {
         try {
-            return await this.pmanager.getProductById(id);
+            return await this.persistance.getProductById(id);
         } catch (error) {
             throw error;
         }
@@ -29,7 +28,7 @@ class ProductsRepository {
 
     async addProduct(product) {
         try {
-            return await this.pmanager.addProduct(product);
+            return await this.persistance.addProduct(product);
         } catch (error) {
             throw error;
         }
@@ -37,7 +36,7 @@ class ProductsRepository {
 
     async updateProduct(id, product) {
         try {
-            return await this.pmanager.updateProduct(id, product);
+            return await this.persistance.updateProduct(id, product);
         } catch (error) {
             throw error;
         }
@@ -45,11 +44,9 @@ class ProductsRepository {
 
     async deleteProduct(id) {
         try {
-            return await this.pmanager.deleteProduct(id);
+            return await this.persistance.deleteProduct(id);
         } catch (error) {
             throw error;
         }
     }
 }
-
-export default new ProductsRepository();

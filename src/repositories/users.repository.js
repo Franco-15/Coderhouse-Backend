@@ -1,18 +1,15 @@
-import UserManager from "../dao/mongo/user.manager.js";
 
-class UsersRepository {
-    constructor() {
-        this.userManager = new UserManager();
+export default class UsersRepository {
+    constructor(persistence) {
+        this.persistence = persistence
     }
 
     async getUsers(){
         try {
-            const users = await this.userManager.getUsers();
+            const users = await this.persistence.getUsers();
             return users;
         } catch (error) {
             throw error;
         }
     };
 }
-
-export default new UsersRepository();

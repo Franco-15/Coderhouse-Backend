@@ -1,7 +1,7 @@
 import Exception from "../../exceptions.js";
 import productsModel from "./models/products.model.js";
 
-export default class ProductManager {
+class ProductManager {
 
     async addProduct(product) {
         try {
@@ -90,3 +90,5 @@ export default class ProductManager {
         }
     }
 }
+
+export const productManager = new ProductManager();

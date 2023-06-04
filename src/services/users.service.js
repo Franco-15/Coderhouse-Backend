@@ -1,4 +1,4 @@
-import usersRepository from "../repositories/users.repository.js";
+import { usersRepository } from "../repositories/index.js";
 
 class UsersService {
     constructor() {}

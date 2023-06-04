@@ -1,4 +1,5 @@
 import { usersRepository } from "../repositories/index.js";
+import DTOUSer from "../dao/dto/user.dto.js";
 
 class UsersService {
     constructor() {}
@@ -8,8 +9,7 @@ class UsersService {
             const users = await usersRepository.getUsers();
             // Remove password from users
             const modifiedUsers = users.map((user) => {
-                const { password, ...userWithoutPassword } = user._doc;
-                return userWithoutPassword;
+                return new DTOUSer(user).getUser();
             });
             return modifiedUsers;
         } catch (error) {

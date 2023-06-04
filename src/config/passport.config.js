@@ -6,6 +6,7 @@ import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2";
 import config from "./config.js";
 import jwt from "passport-jwt";
+import DTOUSer from "../dao/dto/user.dto.js";
 
 const { clientID, clientSecret, callbackUrl, jwtSecret } = config;
 
@@ -69,7 +70,8 @@ const initializePassport = () => {
 
                     if (!isValidPassword(user, password))
                         return done(null, false);
-
+                    
+                    user = new DTOUSer(user).getUser();
                     return done(null, user);
                 } catch (error) {
                     return done(error);

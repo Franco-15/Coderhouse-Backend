@@ -101,3 +101,18 @@ export async function updateCart(req, res) {
         res.status(error.status).send(error.message);
     }
 }
+
+export async function purchase(req, res) {
+    const cid = req.params.cid;
+    const user = req.user;
+    try {
+        const completedPurchase = await cartsService.purchase({ cid, user });
+        res.status(200).send({
+            status: "success",
+            message: `Purchase completed. Cart: ${cid}`,
+            payload: completedPurchase
+        });
+    } catch (error) {
+        res.status(error.status).send(error.message);
+    }
+}

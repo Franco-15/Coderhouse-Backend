@@ -9,11 +9,13 @@ switch (config.persistance) {
     const {cartManager} = await import ("../dao/mongo/cart.manager.js");
     const {productManager} = await import("../dao/mongo/product.manager.js");
     const {userManager} = await import("../dao/mongo/user.manager.js");
+    const {ticketManager} = await import("../dao/mongo/ticket.manager.js");
     
     persistance = {
         cartManager: cartManager,
         productManager: productManager,
         userManager: userManager,
+        ticketManager: ticketManager
     };
     break;
 

@@ -16,4 +16,13 @@
         </div>
     </li>
     {{/each}}
+    <button>
+        <a href="/products">Seguir comprando</a>
+    </button>
+    <button id="clear-cart">Vaciar carrito</button>
+    <a href="/api/carts/{{cart._id}}/purchase">
+        <button>Finalizar compra</button>
+    </a>
 </ul>
+
+<script src="/js/cart.js"></script>

@@ -79,7 +79,6 @@ export function viewMain(req, res) {
     res.render("login");
 }
 
-//===== CURRENT USER =====
 export function viewCurrent(req, res) {
     
     const {user} = req.user;
@@ -93,4 +92,8 @@ export function viewCurrent(req, res) {
             message: "User logged",
             payload: user,
         });
+}
+
+export function viewMessages(req, res) {
+    res.render("messages");
 }

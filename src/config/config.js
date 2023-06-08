@@ -12,6 +12,7 @@ const config = {
   callbackUrl: process.env.GITHUB_CALLBACK_URL,
   jwtSecret: process.env.JWT_SECRET,
   jwtCookieName: process.env.JWT_COOKIE_NAME,
+  persistance: process.env.PERSISTANCE,
 };
 
 export default config;

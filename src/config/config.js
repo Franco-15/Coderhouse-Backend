@@ -10,6 +10,8 @@ const config = {
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
   callbackUrl: process.env.GITHUB_CALLBACK_URL,
+  jwtSecret: process.env.JWT_SECRET,
+  jwtCookieName: process.env.JWT_COOKIE_NAME,
 };
 
 export default config;

@@ -25,3 +25,14 @@ export const isValidPassword = (user, password) =>
 
 export const uploader = multer({ storage });
 export default __dirname;
+
+export const authorization = (role) => {
+    return async (req, res, next) => {
+      const { user } = req.user;
+      if (user && user.role != role)
+        return res.status(403).send({ error: "No permissions" });
+  
+      next();
+    };
+  };
+  

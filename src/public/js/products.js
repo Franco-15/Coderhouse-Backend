@@ -12,15 +12,13 @@ async function getProducts() {
 
 function addProductToCart(cid, pid) {
     let product = document.getElementById(`pid-${pid}-cid-${cid}`);
-    console.log(cid);
-    console.log(pid);
-    console.log(product);
+
     if (product)
         product.onclick = (e) => {
             e.preventDefault();
 
             const product = {
-                quantity: -1,
+                quantity: 1,
             };
 
             fetch(`/api/carts/${cid}/product/${pid}`, {
@@ -38,22 +36,42 @@ function addProductToCart(cid, pid) {
 }
 
 function deleteProductFromCart(cid, pid) {
-    let product = document.getElementById(`deleteProduct-${pid}`);
+    let product = document.getElementById(`deleteProduct${pid}-Cart${cid}`);
 
     if (product)
-        product.onclick = (e) => {
+        product.onclick = async (e) => {
             e.preventDefault();
-
-            fetch(`./api/carts/${cid}/product/${pid}`, {
+            const response = await fetch(`/api/carts/${cid}/product/${pid}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                 },
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                });
+            const result = await response.json();
+            console.log(result);
+            if (result.status === "error") {
+                alert(result.message);
+            }
+        };
+}
+
+function deleteProduct(pid){
+    let product = document.getElementById(`deleteProduct-${pid}`);
+
+    if (product)
+        product.onclick = async (e) => {
+            e.preventDefault();
+            const response = await fetch(`./api/products/${pid}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+            const result = await response.json();
+            console.log(result);
+            if (result.status === "error") {
+                alert(result.message);
+            }
         };
 }
 
@@ -70,6 +88,7 @@ const main = async () => {
             addProductToCart(cid, pid);
             deleteProductFromCart(cid, pid);
         });
+        deleteProduct(pid);
     });
 };
 

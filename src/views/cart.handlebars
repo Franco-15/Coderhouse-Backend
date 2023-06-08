@@ -13,6 +13,7 @@
             <img src={{this}} alt="imagen de producto">
             {{/each}}
             <br>
+            <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}" ,>Quitar</button>
         </div>
     </li>
     {{/each}}
@@ -25,4 +26,4 @@
     </a>
 </ul>
 
-<script src="/js/cart.js"></script>
+<script src="/js/products.js"></script>

@@ -55,6 +55,7 @@ export async function logout(req, res) {
 //===== GITHUB =====
 
 export async function githubResponse(req, res) {
+    let user = req.user;
     let token = jwt.sign({user}, config.jwtSecret, {
         expiresIn: "24h",
     });

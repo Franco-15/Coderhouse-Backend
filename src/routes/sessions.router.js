@@ -32,7 +32,7 @@ sessionRouter.get("/github",
 );
 
 sessionRouter.get("/githubcallback",
-    passport.authenticate("github", { failureRedirect: "./faillogin" }),
+    passport.authenticate("github", {session:false, failureRedirect: "./faillogin" }),
     githubResponse
 );
 

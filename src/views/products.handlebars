@@ -3,14 +3,20 @@
     <h2>User data</h2>
     <ul>
         <li>Email: {{user.email}}</li>
-        <li>Rol: {{user.rol}}</li>
+        <li>Rol: {{user.role}}</li>
     </ul>
 </div>
-
 <div>
     <a href="/cart/{{user.cartId}}">
         <button>
             Carrito
+        </button>
+    </a>
+</div>
+<div>
+    <a href="/messages">
+        <button>
+            Chat
         </button>
     </a>
 </div>
@@ -20,7 +26,7 @@
 </h2>
 <div id="products">
     <ul>
-        {{#each products}}
+        {{#each products.products}}
         <li>
             <div id={{this.id}}>
                 <p>{{this.title}}</p>
@@ -30,7 +36,8 @@
                 <button id="pid-{{this.id}}-cid-{{../user.cartId}}">Agregar al carrito</button>
                 {{else}}
                 <button disabled>Agregar al carrito</button>
-                {{/if}} <button id="deleteProduct-{{this.id}}" ,>Eliminar</button>
+                {{/if}}
+                <button id="deleteProduct-{{this.id}}">Eliminar producto</button>
                 <a href="/product/{{this.id}}">
                     <button>Detalles del producto</button>
                 </a>

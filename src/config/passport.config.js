@@ -1,19 +1,29 @@
 import passport from "passport";
 import local from "passport-local";
-import userModel from "../dao/models/user.model.js";
-import cartModel from "../dao/models/cart.model.js";
+import userModel from "../dao/mongo/models/user.model.js";
+import cartModel from "../dao/mongo/models/cart.model.js";
 import { createHash, isValidPassword } from "../utils.js";
 import GitHubStrategy from "passport-github2";
-import config from "../config.js";
+import config from "./config.js";
+import jwt from "passport-jwt";
+import DTOUSer from "../dao/dto/user.dto.js";
 
-const { clientID, clientSecret, callbackUrl } = config;
+const { clientID, clientSecret, callbackUrl, jwtSecret } = config;
 
 const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJwt = jwt.ExtractJwt;
+
+const cookieExtractor = (req) => {
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies[config.jwtCookieName];
+    }
+    return token;
+};
 
 const initializePassport = () => {
-    passport.use(
-        "register",
-        new LocalStrategy(
+    passport.use( "register", new LocalStrategy(
             {
                 passReqToCallback: true,
                 usernameField: "email",
@@ -23,9 +33,7 @@ const initializePassport = () => {
                     const { first_name, last_name, email, age } = req.body;
                     let user = await userModel.findOne({ email: username });
                     if (user) {
-                        return done(null, false, {
-                            message: "User already exists",
-                        });
+                        return done(null, false);
                     }
 
                     const newCart = await cartModel.create({});
@@ -43,16 +51,13 @@ const initializePassport = () => {
                     let userCreated = await userModel.create(newUser);
                     return done(null, userCreated);
                 } catch (error) {
-                    console.log(error);
                     return done(error);
                 }
             }
         )
     );
 
-    passport.use(
-        "login",
-        new LocalStrategy(
+    passport.use("login", new LocalStrategy(
             {
                 usernameField: "email",
             },
@@ -65,7 +70,8 @@ const initializePassport = () => {
 
                     if (!isValidPassword(user, password))
                         return done(null, false);
-
+                    
+                    user = new DTOUSer(user).getUser();
                     return done(null, user);
                 } catch (error) {
                     return done(error);
@@ -73,10 +79,19 @@ const initializePassport = () => {
             }
         )
     );
+            
+    passport.use("jwt", new JWTStrategy({
+        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+        secretOrKey: jwtSecret,
+    }, async (payload, done) => {
+        try {
+            return done(null, payload);
+        } catch (error) {
+            return done(error);
+        }
+    }));
 
-    passport.use(
-        "github",
-        new GitHubStrategy(
+    passport.use("github", new GitHubStrategy(
             {
                 clientID,
                 clientSecret,
@@ -87,6 +102,8 @@ const initializePassport = () => {
                     let user = await userModel.findOne({
                         email: profile._json.email,
                     });
+                    
+                    const newCart = await cartModel.create({});
 
                     if (!user) {
                         let newUser = {
@@ -95,6 +112,8 @@ const initializePassport = () => {
                             age: 18,
                             email: profile._json.email,
                             password: "",
+                            role: "user",
+                            cartId: newCart._id,
                         };
 
                         let result = await userModel.create(newUser);

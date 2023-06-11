@@ -1,23 +1,27 @@
-<h1>Product</h1>
+<h1>Producto</h1>
+<p></p>
 <div id="product">
-    <div id={{id}}>
-        <p>{{title}}</p>
-        <p>{{description}}</p>
-        <p>Code: {{this.code}}</p>
-        <p>Status: {{this.status}}</p>
-        <p>category: {{this.category}}</p>
-        <p>${{this.price}}</p>
-        <p>Cantidad Disponibles: {{this.stock}}</p>
-        {{#each this.thumbnails}}
-        <img src="{{this}}" alt="img" />
-        {{/each}}
-                {{#if this.stock}}
-        <button id="addtoCart-{{this.id}}" ,>Agregar al carrito</button>
+    <div id="{{product._id}}">
+        <p>{{product.title}}</p>
+        <p>{{product.description}}</p>
+        <p>Código: {{product.code}}</p>
+        <p>Estado: {{product.status}}</p>
+        <p>Categoría: {{product.category}}</p>
+        <p>${{product.price}}</p>
+        <p>Cantidad Disponible: {{product.stock}}</p>
+        {{#if product.thumbnails}}
+            {{#each product.thumbnails}}
+                <img src="{{this}}" alt="img" />
+            {{/each}}
+        {{/if}}
+        {{#if product.stock}}
+            <button id="pid-{{product._id}}-cid-{{user.cartId}}">Agregar al carrito</button>
         {{else}}
             <p>Sin stock</p>
         {{/if}}
         <br />
     </div>
 </div>
+
 
 <script src="/js/products.js"></script>

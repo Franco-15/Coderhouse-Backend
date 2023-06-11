@@ -1,7 +1,7 @@
-import cartsModel from "../models/cart.model.js";
+import cartsModel from "./models/cart.model.js";
 import Exception from "../../exceptions.js";
 
-export default class CartManager {
+class CartManager {
     async createCart(cart) {
         try {
             const cartCreated = cartsModel.create(cart);
@@ -63,7 +63,10 @@ export default class CartManager {
             );
             return updatedCart;
         } catch (error) {
-            console.log(error);
+            throw new Exception(500, {
+                status: "error",
+                message: error.message,
+            });
         }
     }
 
@@ -83,7 +86,7 @@ export default class CartManager {
         }
     }
 
-    async deleteProducts(cid) {
+    async deleteAllProducts(cid) {
         try {
             await cartsModel.updateOne(
                 { _id: cid },
@@ -134,3 +137,5 @@ export default class CartManager {
         }
     }
 }
+
+export const cartManager = new CartManager();

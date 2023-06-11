@@ -13,7 +13,17 @@
             <img src={{this}} alt="imagen de producto">
             {{/each}}
             <br>
+            <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}" ,>Quitar</button>
         </div>
     </li>
     {{/each}}
+    <button>
+        <a href="/products">Seguir comprando</a>
+    </button>
+    <button id="clear-cart">Vaciar carrito</button>
+    <a href="/api/carts/{{cart._id}}/purchase">
+        <button>Finalizar compra</button>
+    </a>
 </ul>
+
+<script src="/js/products.js"></script>

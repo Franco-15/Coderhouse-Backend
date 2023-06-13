@@ -8,6 +8,7 @@ import morgan from "morgan";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import routerApi from "./routes/router.js";
+import errorsHandler from "./middlewares/errors/index.js";
 
 const app = express();
 
@@ -16,7 +17,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 //==== Handlebars setting ====
-app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", handlebars.engine({
+    helpers: {
+        isAdmin: function (arg1, arg2, options) {
+            return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+        }
+    }
+}),{
+});
 app.set("views", `${_dirname}/views`);
 app.set("view engine", "handlebars");
 
@@ -29,6 +37,9 @@ initializePassport();
 
 //==== Static files ====
 app.use(express.static(`${_dirname}/public`));
+
+//==== Errors ====
+app.use(errorsHandler);
 
 //==== Routes ====
 routerApi(app);

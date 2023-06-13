@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { viewCart, viewLogin, viewMain, viewProduct, viewProducts, viewRegister, viewCurrent, viewMessages } from "../controllers/views.controller.js";
+import { viewCart, viewLogin, viewMain, viewProduct, viewProducts, viewRegister, viewCurrent, viewMessages, viewAdministrator, viewMocking } from "../controllers/views.controller.js";
 import passport from "passport";
 import { authorization } from "../utils.js";
 
@@ -20,5 +20,9 @@ viewsRouter.get("/", viewMain);
 viewsRouter.get("/current", passport.authenticate("jwt", { session: false }), viewCurrent);
 
 viewsRouter.get("/messages", passport.authenticate("jwt", { session: false }), authorization('user'), viewMessages);
+
+viewsRouter.get("/administrator",passport.authenticate("jwt", { session: false }), authorization('admin'),viewAdministrator)
+
+viewsRouter.get("/mockingproducts", viewMocking); 
 
 export default viewsRouter;

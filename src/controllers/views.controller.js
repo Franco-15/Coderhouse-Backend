@@ -1,4 +1,5 @@
 import viewsService from "../services/views.service.js";
+import { generateProducts } from "../utils.js";
 
 export async function viewProducts(req, res) {
     const { limit, page, sort, category, status } = req.query;
@@ -96,4 +97,13 @@ export function viewCurrent(req, res) {
 
 export function viewMessages(req, res) {
     res.render("messages");
+}
+
+export function viewAdministrator(req, res) {
+    res.render("administrator");
+}
+
+export function viewMocking(req, res) {
+    const products = generateProducts(100);
+    res.send(products);
 }

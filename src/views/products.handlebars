@@ -21,6 +21,15 @@
     </a>
 </div>
 
+{{#isAdmin user.role "admin"}}
+    <div>
+        <a href="/administrator">
+            <button>
+                Administrador
+            </button>
+        </a>
+    </div>
+{{/isAdmin}}
 <h2>
     Lista de productos
 </h2>

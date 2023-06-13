@@ -1,4 +1,7 @@
 import productsService from "../services/products.service.js";
+import { generateProductErrorInfo } from "../services/errors/info.js";
+import CustomError from "../services/errors/CustomError.js";
+import EErrors from "../services/errors/enum.js";
 
 export async function getProducts(req, res) {
     const { limit, page, sort, category, status } = req.query;
@@ -44,6 +47,20 @@ export async function getProductById(req, res) {
 export async function addProduct(req, res) {
     const product = req.body;
     try {
+        if (
+            !product.title ||
+            !product.description ||
+            !product.price ||
+            !product.category ||
+            !product.stock
+        ) {
+            throw new CustomError({
+                name: "ProductError",
+                cause: generateProductErrorInfo(product),
+                message: "One or more properties were incomplete",
+                code: EErrors.INVALID_TYPES_ERROR,
+            });
+        }
         const newProduct = await productsService.addProduct(product);
         res.status(201).send({
             status: "success",
@@ -51,7 +68,17 @@ export async function addProduct(req, res) {
             payload: newProduct,
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        if(error instanceof CustomError){
+            let status = 400;
+            if (error.code === EErrors.INVALID_TYPES_ERROR)
+                status = 400;
+            else if (error.code === EErrors.DATABASE_ERROR || error.code === EErrors.ROUTING_ERROR)
+                status = 500;
+            
+            res.status(status).json({message:error.message, cause:error.cause});
+        }
+        else
+            res.status(error.status).send(error.message);
     }
 }
 

@@ -2,6 +2,7 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import multer from "multer";
 import bcrypt from "bcrypt";
+import { faker } from "@faker-js/faker/locale/es";
 
 // __dirname
 const __filename = fileURLToPath(import.meta.url);
@@ -35,4 +36,32 @@ export const authorization = (role) => {
       next();
     };
   };
-  
+
+
+  // Generate products
+  export const generateProducts = (quantity) => {
+    
+    if (quantity === 1)
+        return generateProduct();
+    
+    let products = [];
+
+    for (let i = 0; i < quantity; i++) {
+      products.push(generateProduct());
+    }
+    return products;
+  };
+
+  export const generateProduct = () => {
+    return {
+      id: faker.database.mongodbObjectId(),
+      code: faker.string.alphanumeric(8),
+      title: faker.commerce.productName(),
+      description: faker.commerce.productDescription(),
+      price: faker.commerce.price(),
+      status: faker.datatype.boolean(),
+      stock: faker.number.int({ min: 0, max: 100 }),
+      category: faker.commerce.department(),
+      thumbnails: [faker.image.imageUrl()],
+    }
+}

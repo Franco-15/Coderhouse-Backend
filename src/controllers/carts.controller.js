@@ -6,6 +6,7 @@ export async function getCartByID(req, res) {
         const cartFromID = await cartsService.getCartByID(cid);
         res.status(200).send(cartFromID);
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -18,9 +19,10 @@ export async function createCart(req, res) {
         res.status(201).send({
             status: "success",
             message: "Cart created",
-            payload: cartCreated
+            payload: cartCreated,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -36,6 +38,7 @@ export async function addProduct(req, res) {
             message: `Product id:${pid} added to cart id:${cid}`,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -48,9 +51,10 @@ export async function deleteProduct(req, res) {
         res.status(200).send({
             status: "success",
             message: `Product id:${pid} deleted from cart id:${cid}`,
-            payload: productDeleted
+            payload: productDeleted,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -63,9 +67,10 @@ export async function deleteAllProducts(req, res) {
         res.status(200).send({
             status: "success",
             message: `Products deleted from cart id:${cid}`,
-            payload: productsDeleted
+            payload: productsDeleted,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -79,9 +84,10 @@ export async function updateProduct(req, res) {
         res.status(200).send({
             status: "success",
             message: `Product id:${pid} updated in cart id:${cid}`,
-            payload: productUpdated
+            payload: productUpdated,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -95,9 +101,10 @@ export async function updateCart(req, res) {
         res.status(200).send({
             status: "success",
             message: `Cart ${cid} updated`,
-            payload: cartUpdated
+            payload: cartUpdated,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -110,9 +117,10 @@ export async function purchase(req, res) {
         res.status(200).send({
             status: "success",
             message: `Purchase completed. Cart: ${cid}`,
-            payload: completedPurchase
+            payload: completedPurchase,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }

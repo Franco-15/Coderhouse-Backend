@@ -16,6 +16,7 @@ export async function getProducts(req, res) {
             payload: products,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -36,7 +37,7 @@ export async function getProductById(req, res) {
             });
         }
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -51,6 +52,7 @@ export async function addProduct(req, res) {
             payload: newProduct,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -67,6 +69,7 @@ export async function updateProduct(req, res) {
             payload: updatedProduct,
         });
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }
@@ -88,6 +91,7 @@ export async function deleteProduct(req, res) {
             });
         }
     } catch (error) {
+        req.logger.error(error);
         res.status(error.status).send(error.message);
     }
 }

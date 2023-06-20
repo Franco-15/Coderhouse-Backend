@@ -2,7 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import userModel from "../dao/mongo/models/user.model.js";
 import cartModel from "../dao/mongo/models/cart.model.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 import GitHubStrategy from "passport-github2";
 import config from "./config.js";
 import jwt from "passport-jwt";
@@ -23,7 +23,9 @@ const cookieExtractor = (req) => {
 };
 
 const initializePassport = () => {
-    passport.use( "register", new LocalStrategy(
+    passport.use(
+        "register",
+        new LocalStrategy(
             {
                 passReqToCallback: true,
                 usernameField: "email",
@@ -57,7 +59,9 @@ const initializePassport = () => {
         )
     );
 
-    passport.use("login", new LocalStrategy(
+    passport.use(
+        "login",
+        new LocalStrategy(
             {
                 usernameField: "email",
             },
@@ -70,7 +74,7 @@ const initializePassport = () => {
 
                     if (!isValidPassword(user, password))
                         return done(null, false);
-                    
+
                     user = new DTOUSer(user).getUser();
                     return done(null, user);
                 } catch (error) {
@@ -79,19 +83,27 @@ const initializePassport = () => {
             }
         )
     );
-            
-    passport.use("jwt", new JWTStrategy({
-        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
-        secretOrKey: jwtSecret,
-    }, async (payload, done) => {
-        try {
-            return done(null, payload);
-        } catch (error) {
-            return done(error);
-        }
-    }));
 
-    passport.use("github", new GitHubStrategy(
+    passport.use(
+        "jwt",
+        new JWTStrategy(
+            {
+                jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+                secretOrKey: jwtSecret,
+            },
+            async (payload, done) => {
+                try {
+                    return done(null, payload);
+                } catch (error) {
+                    return done(error);
+                }
+            }
+        )
+    );
+
+    passport.use(
+        "github",
+        new GitHubStrategy(
             {
                 clientID,
                 clientSecret,
@@ -102,7 +114,7 @@ const initializePassport = () => {
                     let user = await userModel.findOne({
                         email: profile._json.email,
                     });
-                    
+
                     const newCart = await cartModel.create({});
 
                     if (!user) {

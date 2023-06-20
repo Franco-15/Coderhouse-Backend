@@ -19,7 +19,8 @@ export async function viewProducts(req, res) {
         };
         res.render("products", render);
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
     }
 }
 
@@ -38,7 +39,8 @@ export async function viewCart(req, res) {
             });
         }
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
     }
 }
 
@@ -52,8 +54,6 @@ export async function viewProduct(req, res) {
             user: user,
         };
 
-        console.log(infoRender);
-
         if (product) {
             res.render("product", infoRender);
         } else {
@@ -63,7 +63,8 @@ export async function viewProduct(req, res) {
             });
         }
     } catch (error) {
-        console.log(error);
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
     }
 }
 
@@ -80,8 +81,7 @@ export function viewMain(req, res) {
 }
 
 export function viewCurrent(req, res) {
-    
-    const {user} = req.user;
+    const { user } = req.user;
     if (!user)
         return res
             .status(400)
@@ -96,4 +96,16 @@ export function viewCurrent(req, res) {
 
 export function viewMessages(req, res) {
     res.render("messages");
+}
+
+export function viewLogger(req, res) {
+    const loggerMessages = {
+        fatal: req.logger.fatal("Fatal message"),
+        error: req.logger.error("Error message"),
+        warning: req.logger.warning("Warning message"),
+        info: req.logger.info("Info message"),
+        http: req.logger.http("Http message"),
+        debug: req.logger.debug("Debug message"),
+    };
+    res.send({ message: "resultados en consola" });
 }

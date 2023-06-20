@@ -1,19 +1,21 @@
 import express from "express";
-import _dirname from "./utils.js";
+import _dirname from "./utils/utils.js";
 import handlebars from "express-handlebars";
 import cookieParser from "cookie-parser";
 import database from "./db.js";
 import config from "./config/config.js";
-import morgan from "morgan";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import routerApi from "./routes/router.js";
+import { logger_init } from "./utils/logger.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev"));
+
+//==== logger ====
+app.use(logger_init);
 
 //==== Handlebars setting ====
 app.engine("handlebars", handlebars.engine());

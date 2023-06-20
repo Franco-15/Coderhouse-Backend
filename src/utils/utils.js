@@ -5,17 +5,9 @@ import bcrypt from "bcrypt";
 
 // __dirname
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = dirname(__filename).split("\\").slice(0, -1).join("\\");
 
-// multer config
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, `${__dirname}/public/images`);
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    },
-});
+console.log(__dirname);
 
 // hash password
 export const createHash = (password) =>
@@ -23,7 +15,6 @@ export const createHash = (password) =>
 export const isValidPassword = (user, password) =>
     bcrypt.compareSync(password, user.password);
 
-export const uploader = multer({ storage });
 export default __dirname;
 
 export const authorization = (role) => {

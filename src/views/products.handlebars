@@ -1,71 +1,80 @@
-<h1>Bienvenido {{user.first_name}}!</h1>
-<div>
-    <h2>User data</h2>
-    <ul>
-        <li>Email: {{user.email}}</li>
-        <li>Rol: {{user.role}}</li>
-    </ul>
-</div>
-<div>
-    <a href="/cart/{{user.cartId}}">
-        <button>
-            Carrito
-        </button>
-    </a>
-</div>
-<div>
-    <a href="/messages">
-        <button>
-            Chat
-        </button>
-    </a>
-</div>
-
-<h2>
-    Lista de productos
-</h2>
-<div id="products">
-    <ul>
-        {{#each products.products}}
-        <li>
-            <div id={{this.id}}>
-                <p>{{this.title}}</p>
-                <p>${{this.price}}</p>
-                <p>Cantidad Disponibles: {{this.stock}}</p>
-                {{#if this.stock}}
-                <button id="pid-{{this.id}}-cid-{{../user.cartId}}">Agregar al carrito</button>
-                {{else}}
-                <button disabled>Agregar al carrito</button>
-                {{/if}}
-                <button id="deleteProduct-{{this.id}}">Eliminar producto</button>
-                <a href="/product/{{this.id}}">
-                    <button>Detalles del producto</button>
-                </a>
-                <br>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messages">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user" class="nav-link">Mi Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
+                    </li>
+                </ul>
             </div>
-        </li>
-        {{/each}}
-    </ul>
+        </div>
+    </nav>
+</header>
+
+<h2 class="m-3">
+    Productos
+</h2>
+<div id="products" class="d-flex flex-row mb-3 flex-wrap">
+    {{#each products.products}}
+    <div id={{this.id}} class="card m-2 p-2" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{this.title}}</h5>
+            <p class="card-text">{{this.description}}</p>
+            <br>
+            <p class="card-text">Código: {{this.code}}</p>
+            <p class="card-text">Categoría: {{this.category}}</p>
+            <p class="card-text">Precio: ${{this.price}}</p>
+            <p class="card-text">Stock: {{this.stock}}</p>
+            <p class="card-text"></p>
+            {{#if this.stock}}
+            <button id="pid-{{this.id}}-cid-{{../user.cartId}}" type="button" class="btn btn-primary">Agregar al
+                carrito</button>
+            {{else}}
+            <button disabled type="button" class="btn btn-primary">Agregar al carrito</button>
+            {{/if}}
+            <button id="deleteProduct-{{this.id}}" type="button" class="btn btn-danger">Eliminar producto</button>
+            <a href="/product/{{this.id}}">
+                <button type="button" class="btn btn-primary">Detalles del producto</button>
+            </a>
+        </div>
+    </div>
+    {{/each}}
 </div>
-<div>
+<div class="d-flex justify-content-between m-4">
     {{#if hasPrevPAge}}
     <a href="/products?page={{prevPage}}&limit={{limit}}&sort={{sort}}&category={{category}}&status={{status}}">
-        <button type="button">PrevPage</button>
+        <button type="button" class="btn btn-secondary">PrevPage</button>
     </a>
     {{else}}
-    <button type="button" disabled>PrevPage</button>
+    <button type="button" class="btn btn-secondary" disabled>PrevPage</button>
     {{/if}}
     {{#if hasNextPage}}
     <a href="/products?page={{nextPage}}&limit={{limit}}&sort={{sort}}&category={{category}}&status={{status}}">
-        <button type="button">NextPage</button>
+        <button type="button" class="btn btn-secondary">NextPage</button>
     </a>
     {{else}}
-    <button type="button" disabled>NextPage</button>
+    <button type="button" class="btn btn-secondary" disabled>NextPage</button>
     {{/if}}
 </div>
-<div>
-    <button id="logout">Cerrar Sesion</button>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/js/products.js"></script>
-    <script src="/js/logout.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/products.js"></script>
+<script src="/js/user.js"></script>
+<script src="/js/logout.js"></script>

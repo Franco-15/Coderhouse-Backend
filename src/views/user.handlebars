@@ -6,16 +6,16 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Chat</a>
+                        <a class="nav-link" href="/messages">Chat</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/user" class="nav-link">Mi Cuenta</a>
+                        <a href="#" class="nav-link">Mi Cuenta</a>
                     </li>
                     <li class="nav-item">
                         <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
@@ -26,10 +26,16 @@
     </nav>
 </header>
 
-<div class="p-3 mb-2 bg-secondary text-white">
-    <h1 class="m-3">Chat (no implementado)</h1>
-    <div class="m-3">
-        <input class="form-label" type="text" placeholder="Escriba su mensaje">
-        <button type="btn" class="btn btn-primary">Enviar</button>
+<section class="configUser">
+    <div class="userData">
+        <h2>Usuario</h2>
+        <ul class="userDataFields">
+            <li>Nombre: {{user.first_name}}</li>
+            <li>Apellido: {{user.last_name}}</li>
+            <li>Age: {{user.age}}</li>
+            <li>Email: {{user.email}}</li>
+            <li>Rol: {{user.role}}</li>
+        </ul>
     </div>
-</div>
+    <button type="button" class="btn btn-primary" id="restorePassword">Restaurar Contraseña</button>
+</section>

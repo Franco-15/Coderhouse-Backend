@@ -58,3 +58,13 @@ a{
     height: 30px;
     margin-right: 10px;
 }
+
+.configUser{
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.userDataFields{
+    font-size: 1.2rem;
+    list-style: none;
+}

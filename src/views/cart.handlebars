@@ -1,29 +1,61 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/products">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Carrito</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messages">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user" class="nav-link">Mi Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
 <h1>Carrito</h1>
-<ul>
+<ul style="list-style: none;">
     {{#each cart.products}}
     <li>
-        <div id={{this.product._id}}>
-            <h3>{{this.product.title}}</h3>
-            <p>{{this.product.description}}</p>
-            <p>code: {{this.product.code}}</p>
-            <p>${{this.product.price}}</p>
-            <p>categoria: {{this.product.category}}</p>
-            <p>cantidad: {{quantity}}</p>
-            {{#each this.product.thumbnails}}
-            <img src={{this}} alt="imagen de producto">
-            {{/each}}
-            <br>
-            <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}" ,>Quitar</button>
+        <div id={{this.product._id}} class="card m-2 p-2 " style="width: 18rem;">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{this.product.title}}</h5>
+                <p class="card-text">{{this.product.description}}</p>
+                <br>
+                <p class="card-text">Código: {{this.product.code}}</p>
+                <p class="card-text">Categoría: {{this.product.category}}</p>
+                <p class="card-text">Precio: ${{this.product.price}}</p>
+                <p class="card-text">Stock: {{this.product.stock}}</p>
+                <p class="card-text"></p>
+                <br>
+                <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}"
+                    class="btn btn-danger">Quitar</button>
+            </div>
         </div>
     </li>
     {{/each}}
-    <button>
-        <a href="/products">Seguir comprando</a>
-    </button>
-    <button id="clear-cart">Vaciar carrito</button>
-    <a href="/api/carts/{{cart._id}}/purchase">
-        <button>Finalizar compra</button>
-    </a>
 </ul>
+<div class="m-2">
+    <a href="/products">
+        <button class="btn btn-primary">Seguir comprando</button>
+    </a>
+    <button id="clear-cart" class="btn btn-warning">Vaciar carrito</button>
+    <a href="/api/carts/{{cart._id}}/purchase">
+        <button class="btn btn-success">Finalizar compra</button>
+    </a>
+</div>
 
 <script src="/js/products.js"></script>

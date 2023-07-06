@@ -109,3 +109,13 @@ export function viewLogger(req, res) {
     };
     res.send({ message: "resultados en consola" });
 }
+
+export async function viewUser(req, res){
+    const { user } = req.user;
+    try {
+        res.render("user", { user });
+    } catch (error) {
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
+    }
+}

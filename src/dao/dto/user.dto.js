@@ -6,6 +6,7 @@ class DTOUSer {
         this.age = user.age;
         this.role = user.role;
         this.cartId = user.cartId;
+        this._id = user._id.toString();
     }
 
     getUser() {
@@ -16,6 +17,7 @@ class DTOUSer {
             age: this.age,
             role: this.role,
             cartId: this.cartId,
+            id: this._id,
         };
     }
 }

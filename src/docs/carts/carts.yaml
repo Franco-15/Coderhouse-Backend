@@ -1,0 +1,520 @@
+paths:
+  /api/carts/:
+    post:
+      summary: Crea un nuevo carrito de compras
+      tags:
+        - Cart
+      requestBody:
+        description: Carrito de compras a crear
+        content:
+          application/json:
+            schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    pid: 
+                      type: string
+                      description: Id del producto
+                    quantity:
+                      type: number
+                      description: Cantidad del producto
+                example:
+                  [
+                    {
+                      pid: "5f7f1b9b9b7d1e2a3c4d5e6f",
+                      quantity: 2
+                    },
+                    {
+                      pid: "2f7f1b9b9b7d1asdaa4d5e3b",
+                      quantity: 4
+                    }
+                  ]
+
+
+      responses:
+        "201":
+          description: El carrito fue creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Carrito creado exitosamente
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+
+        "500":
+          description: Error al crear el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al crear el carrito
+
+  /api/carts/:cid:
+    get:
+      summary: Obtenemos un carrito de compras por su id
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito fue obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Carrito obtenido exitosamente
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+
+        "500":
+          description: Error al obtener el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al obtener el carrito
+    put:
+      summary: Actualizar un carrito de compras por su id
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito fue actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Carrito actualizado exitosamente
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+
+        "500":
+          description: Error al actualizar el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al actualizar el carrito
+    delete:
+      summary: Eliminar un carrito de compras por su id
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El carrito fue eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Carrito eliminado exitosamente
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error al eliminar el carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al eliminar el carrito
+
+  /api/carts/:cid/product/:pid:
+    post:
+      summary: Agregar un producto a un carrito de compras
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Producto a agregar al carrito
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Cantidad del producto a agregar
+                  example:
+                    quantity: 2
+
+      responses:
+        "200":
+          description: El producto fue agregado exitosamente al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Producto agregado exitosamente al carrito
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error al agregar el producto al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al agregar el producto al carrito
+    put:
+      summary: Actualizar cantidad de un producto en un carrito de compras
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Cantidad del producto a actualizar
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Cantidad del producto a agregar
+                  example:
+                    quantity: 3
+
+      responses:
+        "200":
+          description: La cantidad del producto fue actualizada exitosamente al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Producto actualizado exitosamente al carrito
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error al actualizar la cantidad del producto al carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al actualizar la cantidad del producto al carrito
+    delete:
+      summary: Eliminar producto de un carrito de compras
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            type: string
+        - name: pid
+          in: path
+          description: Id del producto
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: El producto fue eliminado exitosamente del carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Producto eliminado exitosamente del carrito
+                  payload:
+                    $ref: "#/components/schemas/Cart"
+        "500":
+          description: Error al eliminar el producto del carrito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al eliminar el producto del carrito
+
+  /api/carts/:cid/purchase:
+    get:
+      summary: Generar orden de compra
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          description: Id del carrito de compras
+          required: true
+          schema:
+            $type: string
+
+      responses:
+        "200":
+          description: Orden de compra generada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: success
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Orden de compra generada exitosamente
+                  payload:
+                    $ref: "#/components/schemas/Ticket"
+        "500":
+          description: Error al generar la orden de compra
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: Estado de la operación
+                    example: error
+                  message:
+                    type: string
+                    description: Mensaje de la operación
+                    example: Error al generar la orden de compra
+
+components:
+  schemas:
+    Cart:
+      type: array
+      items:
+        type: object
+        properties:
+          product:
+            type: object
+            properties:
+              _id:
+                  type: ObjectId
+                  description: Id autogenerado de mongoDB
+              title:
+                type: string
+                description: Nombre del producto
+                required: true
+              description:
+                type: string
+                description: Descripción del producto
+                required: true
+              code:
+                type: string
+                description: Código del producto
+                required: true
+              price:
+                type: number
+                description: Precio del producto
+                required: true
+              status:
+                type: boolean
+                description: Indica si hay stock del producto
+                required: true
+              stock:
+                type: number
+                description: Stock del producto
+              category:
+                type: string
+                description: Categoría del producto
+                required: true
+              thumbnails:
+                type: array
+                description: Imágenes del producto
+                items:
+                  type: string
+                default: []
+          quantity:
+            type: number
+            description: Cantidad del producto
+            required: true
+            example: 2
+      example:
+        - product:
+            _id: "5f3as54d3v51ad3f5g454315"
+            title: "Producto 1"
+            description: "Descripción del producto 1"
+            code: "1"
+            price: 100
+            status: true
+            stock: 10
+            category: "Categoría 1"
+            thumbnails: []
+          quantity: 2
+
+    Ticket:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Código de la orden de compra
+          example: "5f3as54d3v51ad3f5g454315"
+        purchase_datetime:
+          type: string
+          format: date-time
+          description: Fecha y hora de la compra
+          example: "2020-08-17T03:24:00.000Z"
+        amount:
+          type: number
+          description: Monto total de la compra
+          example: 500
+        purchaser:
+          type: string
+          format: email
+          description: Email del comprador
+      example:
+        code: "5f3as54d3v51ad3f5g454315"
+        purchase_datetime: "2020-08-17T03:24:00.000Z"
+        amount: 500
+        purchaser: "user@email.com"

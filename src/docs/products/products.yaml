@@ -1,0 +1,334 @@
+paths:
+    /api/products/:
+        get:
+            summary: Obtiene todos los productos
+            tags:
+                - Products
+            responses:
+                "200":
+                    description: Los productos fueron obtenidos exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: success
+                                    message:
+                                        type: string
+                                        description: Mensaje de la peticion
+                                        example: Productos obtenidos exitosamente
+                                    payload:
+                                        type: array
+                                        description: Productos obtenidos
+                                        items:
+                                            type: object
+                                            $ref: "#components/schemas/Product-Response"
+
+                "500":
+                    description: No se pudieron obtener los productos por un error en el servidor.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: error
+                                    message:
+                                        type: string
+                                        description: Mensaje de error
+                                        example: No se pudieron obtener los productos por un error en el servidor.
+        post:
+            summary: Crea un nuevo producto
+            tags:
+                - Products
+            requestBody:
+                description: Producto a crear
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            $ref: "#components/schemas/Product-Request"
+            responses:
+                "200":
+                    description: El producto fue creado exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: success
+                                    message:
+                                        type: string
+                                        description: Mensaje de la peticion
+                                        example: Producto creado exitosamente
+                                    payload:
+                                        type: object
+                                        description: Producto creado
+                                        $ref: "#components/schemas/Product-Response"
+                "500":
+                    description: No se pudo crear el producto por un error en el servidor.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: error
+                                    message:
+                                        type: string
+                                        description: Mensaje de error
+                                        example: No se pudo crear el producto por un error en el servidor.
+
+    /api/products/{id}:
+        get:
+            summary: Obtiene un producto mediante su id
+            tags:
+                - Products
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: id del producto que desea obtener
+                  schema:
+                      $type: String
+            responses:
+                "200":
+                    description: El producto fue obtenido exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: success
+                                    message:
+                                        type: string
+                                        description: Mensaje de la peticion
+                                        example: Producto obtenido exitosamente
+                                    payload:
+                                        type: object
+                                        description: Producto obtenido
+                                        $ref: "#components/schemas/Product-Response"
+
+                "500":
+                    description: No se pudo obtener el producto por un error en el servidor.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: error
+                                    message:
+                                        type: string
+                                        description: Mensaje de error
+                                        example: No se pudo obtener el producto por un error en el servidor.
+        put:
+            summary: Actualiza un producto mediante su id
+            tags:
+                - Products
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: id del producto que desea actualizar
+                  schema:
+                      $type: String
+            requestBody:
+                description: Producto a actualizar
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            $ref: "#components/schemas/Product-Request"
+            responses:
+                "200":
+                    description: El producto fue actualizado exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: success
+                                    message:
+                                        type: string
+                                        description: Mensaje de la peticion
+                                        example: Producto actualizado exitosamente
+                                    payload:
+                                        type: object
+                                        description: Producto actualizado
+                                        $ref: "#components/schemas/Product-Response"
+                "500":
+                    description: No se pudo actualizar el producto por un error en el servidor.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: error
+                                    message:
+                                        type: string
+                                        description: Mensaje de error
+                                        example: No se pudo actualizar el producto por un error en el servidor.
+        delete:
+            summary: Elimina un producto mediante su id
+            tags:
+                - Products
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: id del producto que desea eliminar
+                  schema:
+                      $type: String
+            responses:
+                "200":
+                    description: El producto fue eliminado exitosamente
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: success
+                                    message:
+                                        type: string
+                                        description: Mensaje de la peticion
+                                        example: Producto eliminado exitosamente
+                                    payload:
+                                        type: object
+                                        description: Producto eliminado
+                                        $ref: "#components/schemas/Product-Response"
+                "500":
+                    description: No se pudo eliminar el producto por un error en el servidor.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: string
+                                        description: Estado de la peticion
+                                        example: error
+                                    message:
+                                        type: string
+                                        description: Mensaje de error
+                                        example: No se pudo eliminar el producto por un error en el servidor.
+
+components:
+    schemas:
+        Product-Response:
+            type: object
+            properties:
+                _id:
+                    type: ObjectId
+                    description: Id autogenerado de mongo
+                title:
+                    type: String
+                    description: Nombre del producto
+                    required: true
+                description:
+                    type: String
+                    description: Descripcion del producto
+                    required: true
+                code:
+                    type: String
+                    description: Codigo del producto
+                    required: true
+                price:
+                    type: Number
+                    description: Precio del producto
+                    required: true
+                status:
+                    type: Boolean
+                    description: Indica si hay stock del producto
+                    required: true
+                stock:
+                    type: Number
+                    description: Stock del producto
+                category:
+                    type: String
+                    description: Categoria del producto
+                    required: true
+                thumbnails:
+                    type: Array
+                    description: Imagenes del producto
+                    default: []
+            example:
+                _id: ObjectId("as35f3as54d3v51ad3f5g454315")
+                title: Gaseosa
+                description: Sabor limon. 2.25Lts
+                code: aa54
+                price: 250
+                status: true
+                stock: 50
+                category: Gaseosas
+                thumbnails: ["https://www.google.com.ar/imagen1.jpg", "https://www.google.com.ar/imagen2.jpg"]
+        Product-Request:
+            type: object
+            properties:
+                title:
+                    type: String
+                    description: Nombre del producto
+                    required: true
+                description:
+                    type: String
+                    description: Descripcion del producto
+                    required: true
+                code:
+                    type: String
+                    description: Codigo del producto
+                    required: true
+                price:
+                    type: Number
+                    description: Precio del producto
+                    required: true
+                status:
+                    type: Boolean
+                    description: Indica si hay stock del producto
+                    required: true
+                stock:
+                    type: Number
+                    description: Stock del producto
+                    required: true
+                category:
+                    type: String
+                    description: Categoria del producto
+                    required: true
+                thumbnails:
+                    type: Array
+                    description: Imagenes del producto
+                    default: []
+            example:
+                title: Gaseosa
+                description: Sabor limon. 2.25Lts
+                code: aa54
+                price: 250
+                status: true
+                stock: 50
+                category: Gaseosas
+                thumbnails: ["https://www.google.com.ar/imagen1.jpg", "https://www.google.com.ar/imagen2.jpg"]

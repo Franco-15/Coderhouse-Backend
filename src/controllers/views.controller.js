@@ -110,7 +110,7 @@ export function viewLogger(req, res) {
     res.send({ message: "resultados en consola" });
 }
 
-export async function viewUser(req, res){
+export function viewUser(req, res){
     const { user } = req.user;
     try {
         res.render("user", { user });

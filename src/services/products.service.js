@@ -25,7 +25,6 @@ class ProductsService {
             const product = await productsRepository.getProductById(id);
             return product;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

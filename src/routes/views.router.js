@@ -9,6 +9,7 @@ import {
     viewCurrent,
     viewMessages,
     viewLogger,
+    viewUser,
 } from "../controllers/views.controller.js";
 import passport from "passport";
 import { authorization } from "../utils/utils.js";
@@ -54,5 +55,11 @@ viewsRouter.get(
 );
 
 viewsRouter.get("/loggerTest", viewLogger);
+
+viewsRouter.get(
+    "/user",
+    passport.authenticate("jwt", { session: false }),
+    viewUser
+);
 
 export default viewsRouter;

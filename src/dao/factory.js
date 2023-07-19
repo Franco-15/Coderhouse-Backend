@@ -6,16 +6,16 @@ export let persistance = undefined;
 switch (config.persistance) {
   case "mongodb":
     mongoose.connect(config.dbUrl);
-    const {cartManager} = await import ("../dao/mongo/cart.manager.js");
-    const {productManager} = await import("../dao/mongo/product.manager.js");
-    const {userManager} = await import("../dao/mongo/user.manager.js");
-    const {ticketManager} = await import("../dao/mongo/ticket.manager.js");
+    const {cart} = await import ("../dao/mongo/cart.dao.js");
+    const {product} = await import("../dao/mongo/product.dao.js");
+    const {user} = await import("../dao/mongo/user.dao.js");
+    const {ticket} = await import("../dao/mongo/ticket.dao.js");
     
     persistance = {
-        cartManager: cartManager,
-        productManager: productManager,
-        userManager: userManager,
-        ticketManager: ticketManager
+        cart: cart,
+        product: product,
+        user: user,
+        ticket: ticket
     };
     break;
 

@@ -1,7 +1,7 @@
 import ticketModel from "./models/ticket.model.js";
 import Exception from "../../exceptions.js";
 
-class TicketManager {
+class Ticket {
     async createTicket(ticket) {
         try {
             const ticketCreated = ticketModel.create(ticket);
@@ -55,4 +55,4 @@ class TicketManager {
     }
 }
 
-export const ticketManager = new TicketManager();
+export const ticket = new Ticket();

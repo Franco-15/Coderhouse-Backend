@@ -1,11 +1,12 @@
 import Exception from "../../exceptions.js";
 import productsModel from "./models/products.model.js";
 
-class ProductManager {
+class Product {
 
     async addProduct(product) {
         try {
-            await productsModel.create(product);
+            const productAdded = await productsModel.create(product);
+            return productAdded;
         } catch (error) {
             throw new Exception(500, {
                 status: "error",
@@ -91,4 +92,4 @@ class ProductManager {
     }
 }
 
-export const productManager = new ProductManager();
+export const product = new Product();

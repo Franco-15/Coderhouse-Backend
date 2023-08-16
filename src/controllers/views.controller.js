@@ -1,4 +1,5 @@
 import viewsService from "../services/views.service.js";
+import usersService from "../services/users.service.js";
 
 export async function viewProducts(req, res) {
     const { limit, page, sort, category, status } = req.query;
@@ -114,6 +115,36 @@ export function viewUser(req, res){
     const { user } = req.user;
     try {
         res.render("user", { user });
+    } catch (error) {
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
+    }
+}
+
+export async function viewChangePassword(req, res){
+    const {email} = req.user
+    try {
+        const user = await usersService.getUserByEmail(email);
+
+        const data = {
+            first_name : user.first_name,
+            last_name : user.last_name,
+            email : user.email,
+            password : user.password,
+            age : user.age,
+            role : user.role,
+            cartId : user.cartId,
+            id : user._id.toString(),
+        }
+        res.render("restorePassword", {user:data});
+    } catch (error) {
+        req.logger.error(error);
+    }
+}
+
+export function viewForgotPassword(req, res){
+    try {
+        res.render("forgotPass");
     } catch (error) {
         req.logger.error(error);
         res.status(error.status).send(error.message);

@@ -10,7 +10,7 @@ switch (config.persistance) {
     const {product} = await import("../dao/mongo/product.dao.js");
     const {user} = await import("../dao/mongo/user.dao.js");
     const {ticket} = await import("../dao/mongo/ticket.dao.js");
-    
+
     persistance = {
         cart: cart,
         product: product,

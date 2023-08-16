@@ -9,25 +9,26 @@ import {
     updateProduct,
     purchase,
 } from "../controllers/carts.controller.js";
+import { authorization } from "../utils/utils.js";
 import passport from "passport";
 
 //Create Router instance
 const cartsRouter = Router();
 
-cartsRouter.get("/:cid", getCartByID);
+cartsRouter.get("/:cid", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]),getCartByID);
 
-cartsRouter.post("/", createCart);
+cartsRouter.post("/", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]),createCart);
 
-cartsRouter.post("/:cid/product/:pid", addProduct);
+cartsRouter.post("/:cid/product/:pid", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]),addProduct);
 
-cartsRouter.delete("/:cid/product/:pid", deleteProduct);
+cartsRouter.delete("/:cid/product/:pid", passport.authenticate("jwt", { session: false} ),  authorization(["user","premium"]),deleteProduct);
 
-cartsRouter.delete("/:cid", deleteAllProducts);
+cartsRouter.delete("/:cid", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]),deleteAllProducts);
 
-cartsRouter.put("/:cid/product/:pid", updateProduct);
+cartsRouter.put("/:cid/product/:pid", passport.authenticate("jwt", { session: false} ),  authorization(["user","premium"]),updateProduct);
 
-cartsRouter.put("/:cid", updateCart);
+cartsRouter.put("/:cid", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]), updateCart);
 
-cartsRouter.get("/:cid/purchase", passport.authenticate("jwt", { session: false} ), purchase);
+cartsRouter.get("/:cid/purchase", passport.authenticate("jwt", { session: false} ), authorization(["user","premium"]), purchase);
 
 export default cartsRouter;

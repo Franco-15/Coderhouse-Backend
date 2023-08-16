@@ -1,4 +1,5 @@
 import cartsService from "../services/carts.service.js";
+import productsService from "../services/products.service.js";
 
 export async function getCartByID(req, res) {
     const cid = req.params.cid;
@@ -30,8 +31,15 @@ export async function createCart(req, res) {
 export async function addProduct(req, res) {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
-
+    const user = req.user;
     try {
+        const productToAdd = await productsService.getProductByID(pid);
+        if (productToAdd.owner === user.id || productToAdd.owner === user.email)
+            res.status(403).send({
+                status: "error",
+                message: "You can't add your own product to your cart",
+            });
+
         const productAdded = await cartsService.addProduct(cid, pid, quantity);
         res.status(201).send({
             status: "success",

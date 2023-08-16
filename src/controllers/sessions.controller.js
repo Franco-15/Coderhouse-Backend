@@ -21,7 +21,7 @@ export async function login(req, res) {
     user.password = undefined;
 
     let token = jwt.sign({user}, config.jwtSecret, {
-        expiresIn: "24h",
+        expiresIn: "30m",
     });
 
     res.cookie(config.jwtCookieName, token, { httpOnly: true });

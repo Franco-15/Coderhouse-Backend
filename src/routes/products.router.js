@@ -19,21 +19,20 @@ productsRouter.get("/:id", getProductById);
 productsRouter.post(
     "/",
     passport.authenticate("jwt", { session: false }),
-    authorization("admin"),
+    authorization(["admin","premium"]),
     addProduct
 );
 
 productsRouter.put(
     "/:id",
     passport.authenticate("jwt", { session: false }),
-    authorization("admin"),
     updateProduct
 );
 
 productsRouter.delete(
     "/:id",
     passport.authenticate("jwt", { session: false }),
-    authorization("admin"),
+    authorization(["admin","premium"]),
     deleteProduct
 );
 

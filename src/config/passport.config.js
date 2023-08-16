@@ -85,6 +85,29 @@ const initializePassport = () => {
     );
 
     passport.use(
+        "restorePassword",
+        new JWTStrategy(
+            {
+                jwtFromRequest: ExtractJwt.fromExtractors([(req)=>{
+                    let token = null;
+                    if (req && req.cookies) {
+                        token = req.cookies[config.email.restore_pass_token];
+                    }
+                    return token;
+                }]),
+                secretOrKey: config.email.restore_pass_secret,
+            },
+            async (payload, done) => {
+                try {
+                    return done(null, payload);
+                } catch (error) {
+                    return done(error);
+                }
+            }
+        )
+    );
+
+    passport.use(
         "jwt",
         new JWTStrategy(
             {

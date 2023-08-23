@@ -44,7 +44,10 @@ export async function getProductById(req, res) {
 
 export async function addProduct(req, res) {
     const product = req.body;
+    const thumbnails = req.files;
     try {
+        product.thumbnails = thumbnails
+
         const newProduct = await productsService.addProduct(product);
         res.status(201).send({
             status: "success",
@@ -60,11 +63,12 @@ export async function addProduct(req, res) {
 export async function updateProduct(req, res) {
     const id = req.params.id;
     const product = req.body;
-    const user = req.user;
-
+    const {user} = req.user;
+    const thumbnails = req.files;
     try {
+        product.thumbnails = thumbnails
         const productToUpdate = await productsService.getProductById(id);
-        if(user.role === "premium" && productToUpdate.owner !== user.id || productToUpdate.owner !== user.email)
+        if(user.role === "premium" && (productToUpdate.owner !== user.id || productToUpdate.owner !== user.email))
             res.status(403).send({
                 status: "error",
                 message: "You don't have permission to update this product"

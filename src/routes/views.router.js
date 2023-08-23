@@ -12,6 +12,7 @@ import {
     viewUser,
     viewChangePassword,
     viewForgotPassword,
+    viewManageProducts,
 } from "../controllers/views.controller.js";
 import passport from "passport";
 import { authorization } from "../utils/utils.js";
@@ -27,7 +28,7 @@ viewsRouter.get(
 viewsRouter.get(
     "/cart/:cid",
     passport.authenticate("jwt", { session: false, failureRedirect: "/login" }),
-    authorization(["user"]),
+    authorization(["user","premium"]),
     viewCart
 );
 
@@ -52,7 +53,7 @@ viewsRouter.get(
 viewsRouter.get(
     "/messages",
     passport.authenticate("jwt", { session: false, failureRedirect: "/login" }),
-    authorization(["user"]),
+    authorization(["user","premium"]),
     viewMessages
 );
 
@@ -62,6 +63,13 @@ viewsRouter.get(
     "/user",
     passport.authenticate("jwt", { session: false, failureRedirect: "/login" }),
     viewUser
+);
+
+viewsRouter.get(
+    "/manageProducts",
+    passport.authenticate("jwt", { session: false, failureRedirect: "/login" }),
+    authorization(["admin", "premium"]),
+    viewManageProducts
 );
 
 viewsRouter.get(

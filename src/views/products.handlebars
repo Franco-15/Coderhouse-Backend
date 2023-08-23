@@ -8,9 +8,16 @@
             </button>
             <div class="collapse navbar-collapse p-2" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
                     <li class="nav-item">
                         <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
                     </li>
+                    {{/if}}
                     <li class="nav-item">
                         <a class="nav-link" href="/messages">Chat</a>
                     </li>
@@ -42,13 +49,16 @@
             <p class="card-text">Precio: ${{this.price}}</p>
             <p class="card-text">Stock: {{this.stock}}</p>
             <p class="card-text"></p>
-            {{#if this.stock}}
-            <button id="pid-{{this.id}}-cid-{{../user.cartId}}" type="button" class="btn btn-primary">Agregar al
-                carrito</button>
-            {{else}}
-            <button disabled type="button" class="btn btn-primary">Agregar al carrito</button>
+            {{#if (or (isEquals ../user.role "user") (isEquals ../user.role "premium"))}}
+                {{#if this.stock}}
+                <select id="selectQuantity-{{this.id}}" class="form-select" aria-label="Default select example">
+                </select>
+                <button id="pid-{{this.id}}-cid-{{../user.cartId}}" type="button" class="btn btn-primary">Agregar al
+                    carrito</button>
+                {{else}}
+                <button disabled type="button" class="btn btn-primary">Agregar al carrito</button>
+                {{/if}}
             {{/if}}
-            <button id="deleteProduct-{{this.id}}" type="button" class="btn btn-danger">Eliminar producto</button>
             <a href="/product/{{this.id}}">
                 <button type="button" class="btn btn-primary">Detalles del producto</button>
             </a>
@@ -76,5 +86,4 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/products.js"></script>
-<script src="/js/user.js"></script>
 <script src="/js/logout.js"></script>

@@ -6,11 +6,18 @@
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
                     <li class="nav-item">
                         <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
                     </li>
+                    {{/if}}
                     <li class="nav-item">
                         <a class="nav-link" href="/messages">Chat</a>
                     </li>
@@ -38,13 +45,17 @@
             <p class="card-text">Precio: ${{product.price}}</p>
             <p class="card-text">Stock: {{product.stock}}</p>
             <p class="card-text"></p>
-            {{#if product.stock}}
-            <button id="pid-{{product._id}}-cid-{{user.cartId}}" type="button" class="btn btn-primary">Agregar al
-                carrito</button>
-            {{else}}
-            <p>Sin stock</p>
+            {{#if (isUser user.role)}}
+                {{#if product.stock}}
+                <button id="pid-{{product._id}}-cid-{{user.cartId}}" type="button" class="btn btn-primary">Agregar al
+                    carrito</button>
+                {{else}}
+                <p>Sin stock</p>
+                {{/if}}
             {{/if}}
-            <button id="deleteProduct-{{product.id}}" type="button" class="btn btn-danger">Eliminar producto</button>
+            {{#if (isAdmin ../user.role)}}
+            <button id="deleteProduct-{{this.id}}" type="button" class="btn btn-danger">Eliminar producto</button>
+            {{/if}}
         </div>
     </div>
 </div>

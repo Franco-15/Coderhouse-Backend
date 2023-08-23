@@ -33,7 +33,8 @@ export async function addProduct(req, res) {
     const { quantity } = req.body;
     const user = req.user;
     try {
-        const productToAdd = await productsService.getProductByID(pid);
+        console.log(quantity);
+        const productToAdd = await productsService.getProductById(pid);
         if (productToAdd.owner === user.id || productToAdd.owner === user.email)
             res.status(403).send({
                 status: "error",

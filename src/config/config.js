@@ -20,7 +20,9 @@ const config = {
     pass: process.env.EMAIL_PASS,
     restore_pass_token: process.env.RESTORE_PASSWORD_TOKEN,
     restore_pass_secret: process.env.RESTORE_PASSWORD_SECRET,
-  }
+  },
+  admin_email: process.env.ADMIN_EMAIL,
+  admin_password: process.env.ADMIN_PASSWORD,
 };
 
 export default config;

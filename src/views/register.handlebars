@@ -1,35 +1,49 @@
-<div>
-  <h1>Registro</h1>
-  <form id="registerForm">
-    <table>
-      <tr>
-        <td><label>Nombre</label></td>
-        <td><input name="first_name" /></td>
-      </tr>
-      <tr>
-        <td><label>Apellido</label></td>
-        <td><input name="last_name" /></td>
-      </tr>
-      <tr>
-        <td><label>Email</label></td>
-        <td><input name="email" /></td>
-      </tr>
-      <tr>
-        <td><label>Edad</label></td>
-        <td><input name="age" /></td>
-      </tr>
-      <tr>
-        <td><label>Contraseña</label></td>
-        <td><input type="password" name="password" /></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td><input type="submit" /></td>
-      </tr>
-    </table>
-  </form>
-  <p>¿Ya tienes una cuenta? <a href="/login">Ingresa aquí</a></p>
+<div class="loginContainer">
+  <div class="register">
+    <h1>Registro</h1>
+    <form id="registerForm">
+      <table>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;">Nombre</label></td>
+          <td><input class="form-control" name="first_name" style="margin: 10px 0px 10px 10px;" required /></td>
+        </tr>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;">Apellido</label></td>
+          <td><input class="form-control" name="last_name" style="margin: 10px 0px 10px 10px;" required /></td>
+        </tr>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;" style="font-size:1.3rem;">Email</label></td>
+          <td><input class="form-control" name="email" style="margin: 10px 0px 10px 10px;" required /></td>
+        </tr>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;">Edad</label></td>
+          <td><input class="form-control" name="age" style="margin: 10px 0px 10px 10px; weight: 80px;" required /></td>
+        </tr>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;">Contraseña</label></td>
+          <td><input class="form-control" type="password" name="password" style="margin: 10px 0px 10px 10px;"
+              required /></td>
+        </tr>
+        <tr>
+          <td><label "form-label" style="font-size:1.3rem;">Rol</label></td>
+          <td>
+            <select class="form-control" style="margin: 10px 0px 10px 10px;" name="role" required>
+              <option value="user">Usuario</option>
+              <option value="premium">Premium</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input class="btn btn-primary form-control" style="font-size:1.1rem; margin: 10px 0px 10px 10px;"
+              type="submit" /></td>
+        </tr>
+      </table>
+    </form>
+    <p>¿Ya tienes una cuenta? <a href="/login">Ingresa aquí</a></p>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 <script src="/js/register.js"></script>

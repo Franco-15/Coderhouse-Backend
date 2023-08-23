@@ -45,15 +45,18 @@ class UsersService {
         }
     }
 
-    async updateUser(id, userUpdate) {
+    async updateUser(id, user) {
         try {
-            const user = await usersRepository.getUserById(id);
-            userUpdate.password = createHash(userUpdate.password);
-            if (userUpdate.password === user.password) {
-                throw new Exception(400, {
-                    status: "error",
-                    message: "Password is the same",
-                });
+
+            if (user.password) {
+                const userGetted = await usersRepository.getUserById(id);
+                user.password = createHash(user.password);
+                if (user.password === userGetted.password) {
+                    throw new Exception(400, {
+                        status: "error",
+                        message: "Password is the same",
+                    });
+                }
             }
             const userUpdated = await usersRepository.updateUser(id, user);
             return userUpdated;

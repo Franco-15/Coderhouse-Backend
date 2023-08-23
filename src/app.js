@@ -9,6 +9,7 @@ import initializePassport from "./config/passport.config.js";
 import routerApi from "./routes/router.js";
 import { logger_init } from "./utils/logger.js";
 import { sendEmail } from "./utils/restorePassword.js";
+import { isEquals, isNotEquals, and, or } from "./utils/helpers.js";
 
 const app = express();
 
@@ -19,7 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logger_init);
 
 //==== Handlebars setting ====
-app.engine("handlebars", handlebars.engine());
+app.engine("handlebars", handlebars.engine({
+    helpers: {
+        isEquals,
+        isNotEquals,
+        and,
+        or
+    },
+}));
 app.set("views", `${_dirname}/views`);
 app.set("view engine", "handlebars");
 

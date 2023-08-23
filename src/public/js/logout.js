@@ -14,8 +14,8 @@ logoutButton.onclick = async () =>{
     } else {
         Swal.fire({
             icon: "error",
-            title: "Login Error",
-            text: "Email o contraseña incorrectos",
+            title: "Logout Error",
+            text: "Se produjo un error al cerrar la sesión",
         });
     }
 }

@@ -121,6 +121,7 @@ export async function deleteUser(req, res) {
 
 export async function changeRole(req, res) {
     const user = req.user;
+    console.log(user);
     let newRole;
 
     try {
@@ -141,3 +142,27 @@ export async function changeRole(req, res) {
         res.status(error.status).send(error.message);
     }
 };   
+
+export async function loadFiles(req, res){
+    const user = req.user;
+    const {
+        originalname:docName,
+        path:docPath,
+    } = req.file;
+
+    try {
+        const updatedUser = await usersService.updateUser(user.id, {documents: {docName, docPath}});
+        if (!updatedUser) {
+            res.status(404).send({
+                status: "error",
+                message: "Not found user to update",
+            })
+        }
+        res.status(200).send({
+            status: "success",
+            message: "User updated succesfully",
+        });
+    } catch (error) {
+        res.status(error.status).send(error.message);
+    }
+}

@@ -41,28 +41,23 @@ class ProductsService {
 
     async updateProduct(id, product) {
         try {
-            const { quantity, thumbnails } = product;
-
-            const productDB = await productsRepository.getProductById(id);
-
-            let newStock = productDB.stock;
-            let newStatus = productDB.status;
-            let newThumbnails = productDB.thumbnails;
-
-            if (quantity) {
-                newStock += quantity;
-                newStock > 0 ? (newStatus = true) : (newStatus = false);
+            const { stock } = product;
+            
+            let newStatus;
+            let newStock;
+            if (stock<=0){
+                newStock=0;
+                newStatus=false;
             }
-            if (thumbnails)
-                newThumbnails = thumbnails
-
+            else{
+                newStock=stock;
+                newStatus=true;
+            }
             product = {
                 ...product,
                 stock: newStock,
                 status: newStatus,
-                thumbnails: newThumbnails,
             };
-
             const productUpdated = await productsRepository.updateProduct(
                 id,
                 product

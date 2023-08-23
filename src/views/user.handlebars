@@ -8,14 +8,21 @@
             </button>
             <div class="collapse navbar-collapse p-2" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
                     <li class="nav-item">
                         <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
                     </li>
+                    {{/if}}
                     <li class="nav-item">
                         <a class="nav-link" href="/messages">Chat</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Mi Cuenta</a>
+                        <a href="/user" class="nav-link">Mi Cuenta</a>
                     </li>
                     <li class="nav-item">
                         <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
@@ -41,3 +48,4 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/logout.js"></script>

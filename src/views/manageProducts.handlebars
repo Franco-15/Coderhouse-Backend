@@ -1,0 +1,90 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="products">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
+                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
+                    </li>
+                    {{/if}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messages">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user" class="nav-link">Mi Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<section style="padding: 20px; background-color: beige;">
+    <h2>Actualizar Producto</h2>
+    <select id="selectProduct" style="margin: 40px 0px 20px 0px;"></select>
+    <div id="productInfo"></div>
+</section>
+
+<section style="padding: 20px; background-color: rgb(192, 195, 195);">
+    <h2>Crear Producto</h2>
+    <form id="newProduct" enctype="multipart/form-data">
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="title">Título</label>
+            <input type="text" name="title" class="form-control" id="title" required>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="description">Descripción</label>
+            <input type="text" name="description" class="form-control" id="description" required>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="code">Codigo</label>
+            <input type="text" name="code" class="form-control" id="code" required>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="price">Precio</label>
+            <input type="number" name="price" class="form-control" id="price" required>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="stock">Stock</label>
+            <input type="number" name="stock" class="form-control" id="stock" required>
+        </div>
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="category">Categoría</label>
+            <input type="text" name="category" class="form-control" id="category" required>
+        </div>
+        {{#if (isEquals user.role "admin")}}
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="owner">Propietario</label>
+            <input type="text" name="owner" class="form-control" id="owner" value="admin" readonly>
+        </div>
+        {{else}}
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="owner">Propietario</label>
+            <input type="text" name="owner" class="form-control" id="owner" value="{{user.id}}" readonly>
+        </div>
+        {{/if}}
+        <div class="form-group" style="margin-top: 20px;">
+            <label for="thumbnails">Imagenes</label>
+            <input type="file" name="thumbnails" class="form-control" id="img" multiple accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary">CrearProducto</button>
+    </form>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/logout.js"></script>
+<script src="/js/manageProducts.js"></script>

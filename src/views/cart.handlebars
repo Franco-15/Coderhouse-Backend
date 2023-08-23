@@ -8,9 +8,16 @@
             </button>
             <div class="collapse navbar-collapse p-2" id="navbarNav">
                 <ul class="navbar-nav ms-auto d-flex align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Carrito</a>
                     </li>
+                    {{/if}}
                     <li class="nav-item">
                         <a class="nav-link" href="/messages">Chat</a>
                     </li>
@@ -25,12 +32,12 @@
         </div>
     </nav>
 </header>
-<h1>Carrito</h1>
-<ul style="list-style: none;">
+<h1 style="margin: 20px;">Carrito</h1>
+<ul style="list-style: none;" class="d-flex flex-row mb-3 flex-wrap">
     {{#each cart.products}}
     <li>
         <div id={{this.product._id}} class="card m-2 p-2 " style="width: 18rem;">
-            <img src="..." class="card-img-top" alt="...">
+            <img src="" class="card-img-top" alt="...">
             <div class="card-body">
                 <h5 class="card-title">{{this.product.title}}</h5>
                 <p class="card-text">{{this.product.description}}</p>
@@ -39,7 +46,7 @@
                 <p class="card-text">Categoría: {{this.product.category}}</p>
                 <p class="card-text">Precio: ${{this.product.price}}</p>
                 <p class="card-text">Stock: {{this.product.stock}}</p>
-                <p class="card-text"></p>
+                <p class="card-text">Cantidad: {{this.quantity}}</p>
                 <br>
                 <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}"
                     class="btn btn-danger">Quitar</button>
@@ -59,3 +66,4 @@
 </div>
 
 <script src="/js/products.js"></script>
+<script src="/js/logout.js"></script>

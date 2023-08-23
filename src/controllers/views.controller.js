@@ -18,7 +18,13 @@ export async function viewProducts(req, res) {
             products: products,
             user: user,
         };
-        res.render("products", render);
+        res.render("products", {
+            ...render,
+            helpers: {
+                isAdmin: (role) => role === "admin",
+                isUser: (role) => role === "user",
+            },
+        });
     } catch (error) {
         req.logger.error(error);
         res.status(error.status).send(error.message);
@@ -27,12 +33,16 @@ export async function viewProducts(req, res) {
 
 export async function viewCart(req, res) {
     const cid = req.params.cid;
+    const { user } = req.user;
 
     try {
         const cart = await viewsService.viewCart(cid);
 
         if (cart) {
-            res.render("cart", { cart });
+            res.render("cart", {
+                cart: cart,
+                user: user,
+            });
         } else {
             res.status(404).send({
                 status: "error",
@@ -56,7 +66,13 @@ export async function viewProduct(req, res) {
         };
 
         if (product) {
-            res.render("product", infoRender);
+            res.render("product", {
+                ...infoRender,
+                helpers: {
+                    isAdmin: (role) => role === "admin",
+                    isUser: (role) => role === "user",
+                },
+            });
         } else {
             res.status(404).send({
                 status: "error",
@@ -96,7 +112,8 @@ export function viewCurrent(req, res) {
 }
 
 export function viewMessages(req, res) {
-    res.render("messages");
+    const { user } = req.user;
+    res.render("messages", { user });
 }
 
 export function viewLogger(req, res) {
@@ -111,7 +128,7 @@ export function viewLogger(req, res) {
     res.send({ message: "resultados en consola" });
 }
 
-export function viewUser(req, res){
+export function viewUser(req, res) {
     const { user } = req.user;
     try {
         res.render("user", { user });
@@ -121,28 +138,38 @@ export function viewUser(req, res){
     }
 }
 
-export async function viewChangePassword(req, res){
-    const {email} = req.user
+export function viewManageProducts(req, res) {
+    const { user } = req.user;
+    try {
+        res.render("manageProducts", { user });
+    } catch (error) {
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
+    }
+}
+
+export async function viewChangePassword(req, res) {
+    const { email } = req.user
     try {
         const user = await usersService.getUserByEmail(email);
 
         const data = {
-            first_name : user.first_name,
-            last_name : user.last_name,
-            email : user.email,
-            password : user.password,
-            age : user.age,
-            role : user.role,
-            cartId : user.cartId,
-            id : user._id.toString(),
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            password: user.password,
+            age: user.age,
+            role: user.role,
+            cartId: user.cartId,
+            id: user._id.toString(),
         }
-        res.render("restorePassword", {user:data});
+        res.render("restorePassword", { user: data });
     } catch (error) {
         req.logger.error(error);
     }
 }
 
-export function viewForgotPassword(req, res){
+export function viewForgotPassword(req, res) {
     try {
         res.render("forgotPass");
     } catch (error) {

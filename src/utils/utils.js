@@ -1,6 +1,5 @@
 import { fileURLToPath } from "url";
 import { dirname } from "path";
-import multer from "multer";
 import bcrypt from "bcrypt";
 
 // __dirname

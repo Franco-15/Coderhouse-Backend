@@ -10,28 +10,43 @@ async function getProducts() {
     return data.payload;
 }
 
-function addProductToCart(cid, pid) {
-    let product = document.getElementById(`pid-${pid}-cid-${cid}`);
+function addProductToCart(cid, product) {
+    let addProductButton = document.getElementById(`pid-${product.id}-cid-${cid}`);
 
-    if (product)
-        product.onclick = (e) => {
+    const quantity = product.stock;
+    let options = "";
+    for (let i = 1; i <= quantity; i++) {
+        options += `<option value="${i}">${i}</option>`;
+    }
+    const selectQuantity = document.getElementById(`selectQuantity-${product.id}`);
+    if (selectQuantity)
+        selectQuantity.innerHTML = `<select name="quantity">${options}</select>`;
+
+    if (addProductButton)
+        addProductButton.onclick = async (e) => {
             e.preventDefault();
-
-            const product = {
-                quantity: 1,
-            };
-
-            fetch(`/api/carts/${cid}/product/${pid}`, {
+            const quantitySelected = document.getElementById(`selectQuantity-${product.id}`).value;
+            const response = await fetch(`/api/carts/${cid}/product/${product.id}`, {
                 method: "POST",
+                body: JSON.stringify({quantity: quantitySelected}),
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(product),
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
+            const result = await response.json();
+            if (result.status === "error") {
+                Swal.fire({
+                    icon: "error",
+                    title: "Agregar producto al carrito",
+                    text: "No se pudo agregar el producto al carrito",
                 });
+            } else {
+                Swal.fire({
+                    icon: "success",
+                    title: "Agregar producto al carrito",
+                    text: "Se agrego el producto al carrito correctamente",
+                });
+            }
         };
 }
 
@@ -55,26 +70,6 @@ function deleteProductFromCart(cid, pid) {
         };
 }
 
-function deleteProduct(pid){
-    let product = document.getElementById(`deleteProduct-${pid}`);
-
-    if (product)
-        product.onclick = async (e) => {
-            e.preventDefault();
-            const response = await fetch(`./api/products/${pid}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-            const result = await response.json();
-            console.log(result);
-            if (result.status === "error") {
-                alert(result.message);
-            }
-        };
-}
-
 const main = async () => {
     let products = await getProducts();
     let users = await getUsers();
@@ -83,12 +78,11 @@ const main = async () => {
     const idProducts = products.payload.map((product) => product.id);
 
 
-    idProducts.forEach((pid) => {
+    products.payload.forEach((product) => {
         usersId.forEach((cid) => {
-            addProductToCart(cid, pid);
-            deleteProductFromCart(cid, pid);
+            deleteProductFromCart(cid, product.id);
+            addProductToCart(cid, product);
         });
-        deleteProduct(pid);
     });
 };
 

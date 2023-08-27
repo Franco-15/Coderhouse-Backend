@@ -2,20 +2,13 @@ import nodemailer from "nodemailer";
 import config from "../config/config.js";
 import jwt from "jsonwebtoken";
 import usersService from "../services/users.service.js";
+import { sendMail } from "./email.js";
 
 const {
-  email: { service, port, user, pass, restore_pass_secret, restore_pass_token },
+  email: { restore_pass_secret, restore_pass_token },
 } = config;
-const transport = nodemailer.createTransport({
-  service: service,
-  port: port,
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
 
-export const sendEmail = async (req, res) => {
+export const sendRestoreEmail = async (req, res) => {
   const { email } = req.body;
   const user = await usersService.getUserByEmail(email);
   if (!user) {
@@ -27,8 +20,7 @@ export const sendEmail = async (req, res) => {
 
   res.cookie(restore_pass_token, token, { httpOnly: true });
 
-  let result = await transport.sendMail({
-    from: user,
+  let result = await sendMail({
     to: email,
     subject: "Restauracion de contraseña",
     html: `

@@ -41,7 +41,44 @@
             <li>Apellido: {{user.last_name}}</li>
             <li>Age: {{user.age}}</li>
             <li>Email: {{user.email}}</li>
-            <li>Rol: {{user.role}}</li>
+            <li>Role: {{user.role}}</li>
+            {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
+            <li>
+                <form id="changeRole-{{user.id}}">
+                    <div class="form-group" style="margin-top: 20px;">
+                        <label for="role">Rol:</label>
+                        <select name="role">
+                            <option value="user">Usuario</option>
+                            <option value="premium">Premium</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary" style="margin-left: 20px">Cambiar Rol</button>
+                    </div>
+                </form>
+            </li>
+            {{/if}}
+            
+
+            <form id="identification-{{user.id}}" enctype="multipart/form-data">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="identification">Identificacion</label>
+                    <input type="file" name="identification" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Identificacion</button>
+            </form>
+            <form id="direction-{{user.id}}" enctype="multipart/form-data">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="direction">Direccion</label>
+                    <input type="file" name="direction" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Direccion</button>
+            </form>
+            <form id="accountStatus-{{user.id}}" enctype="multipart/form-data">
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="accountStatus">Comprobante de Estado de Cuenta</label>
+                    <input type="file" name="accountStatus" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Comprobante</button>
+            </form>
         </ul>
     </div>
     <button type="button" class="btn btn-primary" id="restorePassword">Restaurar Contraseña</button>
@@ -49,3 +86,4 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/logout.js"></script>
+<script src="/js/profile.js"></script>

@@ -7,6 +7,8 @@ class DTOUSer {
         this.role = user.role;
         this.cartId = user.cartId;
         this._id = user._id.toString();
+        this.documents = user.documents;
+        this.last_connection = user.last_connection;
     }
 
     getUser() {
@@ -18,6 +20,8 @@ class DTOUSer {
             role: this.role,
             cartId: this.cartId,
             id: this._id,
+            documents: this.documents,
+            last_connection: this.last_connection,
         };
     }
 }

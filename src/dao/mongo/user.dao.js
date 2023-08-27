@@ -53,11 +53,19 @@ class User {
 
     async updateUser(id, user) {
         try {
-            const userUpdated = await userModel.updateOne(
-                { _id: id },
-                { $set: user }
-            );
-            return userUpdated;
+            let userUpdated = null;
+            if (user.documents) {
+                userUpdated = await userModel.updateOne(
+                    { _id: id },
+                    { $push: { documents: user.documents } }
+                );
+            } else {
+                userUpdated = await userModel.updateOne(
+                    { _id: id },
+                    { $set: user }
+                );
+            }
+            return userUpdated;    
         } catch (error) {
             throw new Exception(500, {
                 status: "error",
@@ -69,6 +77,18 @@ class User {
     async deleteUser(id) {
         try {
             const userDeleted = await productsModel.deleteOne({ _id: id });
+            return userDeleted;
+        } catch (error) {
+            throw new Exception(500, {
+                status: "error",
+                message: error.message,
+            });
+        }
+    }
+
+    async deleteInactiveUsers(inactiveUsers) {
+        try {
+            const userDeleted = await userModel.deleteMany({ email: { $in: inactiveUsers.map(user => user.email) }});
             return userDeleted;
         } catch (error) {
             throw new Exception(500, {

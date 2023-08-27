@@ -8,7 +8,7 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import routerApi from "./routes/router.js";
 import { logger_init } from "./utils/logger.js";
-import { sendEmail } from "./utils/restorePassword.js";
+import { sendRestoreEmail } from "./utils/restorePassword.js";
 import { isEquals, isNotEquals, and, or } from "./utils/helpers.js";
 
 const app = express();
@@ -45,7 +45,7 @@ app.use(express.static(`${_dirname}/public`));
 routerApi(app);
 
 //==== Email ====
-app.post("/restorePassword", sendEmail);
+app.post("/restorePassword", sendRestoreEmail);
 
 //==== Server ====
 const httpServer = app.listen(config.port, () => {

@@ -7,6 +7,7 @@ import {
   deleteUser,
   changeRole,
   loadFiles,
+  deleteInactiveUsers,
 } from "../controllers/users.controller.js";
 import { authorization } from "../utils/utils.js";
 import passport from "passport";
@@ -25,6 +26,11 @@ usersRouter.post(
   addUser
 );
 
+usersRouter.delete(
+  "/",
+  deleteInactiveUsers
+);
+
 usersRouter.put("/:id", updateUser);
 
 usersRouter.delete(
@@ -35,7 +41,7 @@ usersRouter.delete(
 );
 
 usersRouter.post(
-  "premium/:uid",
+  "/premium/:uid",
   passport.authenticate("jwt", { session: false }),
   authorization(["user", "premium"]),
   changeRole
@@ -44,7 +50,11 @@ usersRouter.post(
 usersRouter.post(
   "/:uid/documents",
   passport.authenticate("jwt", { session: false }),
-  uploader.single("documents"),
+  uploader.fields([
+    { name: "identification" },
+    { name: "direction" },
+    { name: "accountStatus" },
+  ]),
   loadFiles
 );
 export default usersRouter;

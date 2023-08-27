@@ -1,4 +1,3 @@
-
 export default class UsersRepository {
     constructor(persistence) {
         this.persistence = persistence
@@ -48,6 +47,14 @@ export default class UsersRepository {
     async deleteUser(id) {
         try {
             return await this.persistence.deleteUser(id);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteInactiveUsers(inactiveUsers) {
+        try {
+            return await this.persistence.deleteInactiveUsers(inactiveUsers);
         } catch (error) {
             throw error;
         }

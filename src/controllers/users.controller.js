@@ -20,19 +20,19 @@ export async function getUserById(req, res) {
     try {
         const user = await usersService.getUserById(id);
         if (!user) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: "error",
                 message: `Error getting user with id: ${id}`,
             });
         }
-        res.status(200).send({
+        return res.status(200).send({
             status: "success",
             message: "User found successfully",
             user: user,
         });
 
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
 }
 
@@ -41,18 +41,18 @@ export async function getUserByEmail(req, res) {
     try {
         const user = await usersService.getUserByEmail(email);
         if (!user) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: "error",
                 message: `Error getting user with email: ${email}`,
             });
         }
-        res.status(200).send({
+        return res.status(200).send({
             status: "success",
             message: "User found successfully",
             user: user,
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
 }
 
@@ -61,18 +61,18 @@ export async function addUser(req, res) {
     try {
         const newUser = await usersService.addUser(user);
         if (!newUser) {
-            res.status(400).send({
+            return res.status(400).send({
                 status: "error",
                 message: "Error to create user",
             })
         };
-        res.status(201).send({
+        return res.status(201).send({
             status: "success",
             message: "User created successfully",
             user: newUser,
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
 }
 
@@ -83,18 +83,18 @@ export async function updateUser(req, res) {
     try {
         const updatedUser = await usersService.updateUser(id, user);
         if (!updatedUser) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: "error",
                 message: "Not found user to update",
             })
         };
-        res.status(200).send({
+        return res.status(200).send({
             status: "success",
             message: "User updated succesfully",
             payload: updatedUser,
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
 }
 
@@ -104,65 +104,113 @@ export async function deleteUser(req, res) {
     try {
         const userDeleted = await usersService.deleteUser(id);
         if (!userDeleted) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: "error",
                 message: "Not found user to delete",
             })
         };
-        res.status(200).send({
+        return res.status(200).send({
             status: "success",
             message: "User removed succesfully",
         });
     } catch (error) {
-        req.logger.error(error);
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
+    }
+}
+
+export async function deleteInactiveUsers(req, res) {
+
+    try {
+        const usersDeleted = await usersService.deleteInactiveUsers();
+        if (!usersDeleted) {
+            return res.status(404).send({
+                status: "error",
+                message: "Not found users to delete",
+            })
+        };
+        return res.status(200).send({
+            status: "success",
+            message: "Inactive Users removed succesfully",
+        });
+    } catch (error) {
+        return res.status(error.status).send(error.message);
     }
 }
 
 export async function changeRole(req, res) {
-    const user = req.user;
-    console.log(user);
-    let newRole;
-
+    const {user} = req.user;
+    const {role: newRole} = req.body;
     try {
-        newRole = user.role === "user" ? "premium" : "user";
-        const updatedUser = await usersService.updateUser(user.id, { role: newRole });
-        if (!updatedUser) {
-            res.status(404).send({
+
+        const gettedUser = await usersService.getUserById(user.id);
+        if (!gettedUser) {
+            return res.status(404).send({
                 status: "error",
                 message: "Not found user to update",
             })
         }
-        res.status(200).send({
+        const documents = gettedUser.documents;
+        if (documents.length < 3 && (gettedUser.role === "user" || gettedUser.role === "premium")) {
+            return res.status(400).send({
+                status: "error",
+                message: "Debe cargar todos los documentos para cambiar de rol",
+            })
+        }
+        if(newRole === gettedUser.role){
+            return res.status(400).send({
+                status: "error",
+                message: "Ya tienes este rol",
+            })
+        }
+
+        const updatedUser = await usersService.updateUser(user.id, { role: newRole });
+        if (!updatedUser) {
+            return res.status(404).send({
+                status: "error",
+                message: "Not found user to update",
+            })
+        }
+        return res.status(200).send({
             status: "success",
             message: "User updated succesfully",
             payload: updatedUser,
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
-};   
+};
 
-export async function loadFiles(req, res){
-    const user = req.user;
-    const {
-        originalname:docName,
-        path:docPath,
-    } = req.file;
+export async function loadFiles(req, res) {
+    const { user } = req.user;
+    const { identification, direction, accountStatus } = req.files;
+    let docName, docPath;
+
+    if (identification) {
+        docName = identification[0].filename;
+        docPath = identification[0].path;
+    }
+    else if (direction) {
+        docName = direction[0].filename;
+        docPath = direction[0].path;
+    }
+    else if (accountStatus) {
+        docName = accountStatus[0].filename;
+        docPath = accountStatus[0].path;
+    }
 
     try {
-        const updatedUser = await usersService.updateUser(user.id, {documents: {docName, docPath}});
+        const updatedUser = await usersService.updateUser(user.id, { documents: { name: docName, reference: docPath } });
         if (!updatedUser) {
-            res.status(404).send({
+            return res.status(404).send({
                 status: "error",
                 message: "Not found user to update",
             })
         }
-        res.status(200).send({
+        return res.status(200).send({
             status: "success",
             message: "User updated succesfully",
         });
     } catch (error) {
-        res.status(error.status).send(error.message);
+        return res.status(error.status).send(error.message);
     }
 }

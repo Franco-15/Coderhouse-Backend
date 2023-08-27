@@ -1,6 +1,7 @@
 import { usersRepository } from "../repositories/index.js";
 import DTOUSer from "../dao/dto/user.dto.js";
 import { createHash } from "../utils/utils.js";
+import { sendMail } from "../utils/email.js";
 
 class UsersService {
     constructor() { }
@@ -58,8 +59,44 @@ class UsersService {
                     });
                 }
             }
+
             const userUpdated = await usersRepository.updateUser(id, user);
             return userUpdated;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async deleteInactiveUsers() {
+        try {
+            const users = await this.getUsers();
+            const currentDate = new Date();
+            const lastTwoDays = new Date(currentDate.getTime() - 2 * 24 * 60 * 60 * 1000);
+
+            const inactiveUsers = users.filter((user) => {
+                if (user.role != "admin" && user.last_connection.getTime() <= lastTwoDays)
+                    return user;
+            });
+            const userDeleted = await usersRepository.deleteInactiveUsers(inactiveUsers);
+            if (!userDeleted) {
+                throw new Exception(400, {
+                    status: "error",
+                    message: "Error deleting inactive users",
+                });
+            }
+            inactiveUsers.forEach((user) => {
+                sendMail({
+                    to: user.email,
+                    subject: "Eliminacion De Usuario",
+                    html: `
+                          <div>
+                            <h1>Ecommerce de Bebidas</h1>
+                            <p>Su usuario ha sido eliminado por inactividad</p>
+                          </div>
+                          `,
+                  });
+            });
+            return userDeleted;
         } catch (error) {
             throw error;
         }

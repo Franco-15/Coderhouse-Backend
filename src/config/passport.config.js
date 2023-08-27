@@ -165,9 +165,9 @@ const initializePassport = () => {
             };
 
             let result = await userModel.create(newUser);
-            return done(null, result);
+            return done(null,  new DTOUSer(result).getUser());
           }
-          return done(null, user );
+          return done(null, new DTOUSer(user).getUser());
         } catch (error) {
           return done(error);
         }

@@ -128,10 +128,18 @@ export function viewLogger(req, res) {
     res.send({ message: "resultados en consola" });
 }
 
-export function viewUser(req, res) {
+export async function viewUser(req, res) {
     const { user } = req.user;
+    
     try {
-        res.render("user", { user });
+        const userGetted = await usersService.getUserById(user.id);
+        if (!userGetted) {
+            return res.status(404).send({
+                status: "error",
+                message: `Error getting user with id: ${id}`,
+            });
+        }
+        res.render("user", { user: userGetted });
     } catch (error) {
         req.logger.error(error);
         res.status(error.status).send(error.message);

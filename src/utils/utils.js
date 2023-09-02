@@ -1,10 +1,11 @@
 import { fileURLToPath } from "url";
-import { dirname } from "path";
+import path, { dirname } from "path";
 import bcrypt from "bcrypt";
 
 // __dirname
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename).split("\\").slice(0, -1).join("\\");
+const currentDirectory = path.dirname(__filename)
+const __dirname = path.join(currentDirectory, '..')
 
 // hash password
 export const createHash = (password) =>

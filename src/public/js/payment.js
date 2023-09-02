@@ -56,32 +56,34 @@ async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
+    const result = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
         confirmParams: {
             receipt_email: emailAddress,
         },
     });
-    if (error?.type === "card_error" || error?.type === "validation_error")
+    if (result.error?.type === "card_error" || result.error?.type === "validation_error") {
         Swal.fire({
             icon: "error",
             title: "No se pudo realizar el pago",
-            text: `${error.message}`,
+            text: `${result.error.message}`,
         }).then(() => {
             window.location.href = "/products";
         });
-
+    }
+    else {
+        Swal.fire({
+            icon: "success",
+            title: "Pago realizado con éxito",
+        }).then(() => {
+            generateTicket();
+        });
+    }
     setLoading(false);
-    Swal.fire({
-        icon: "success",
-        title: "Pago realizado con éxito",
-    });
-
-    generateTicket(paymentIntent.amount);
 }
 
-async function generateTicket(amount) {
+async function generateTicket() {
     const cid = document.getElementById("cid").innerText;
     const response = await fetch(`./api/carts/${cid}/purchase`, {
         method: "GET",

@@ -208,7 +208,12 @@ export async function viewTicket(req, res) {
                 message: `Error getting ticket with id: ${tid}`,
             });
         }
-        res.render("ticket", { user, ticket });
+        let newTicket = {
+            ...ticket
+        }
+        newTicket = newTicket._doc
+
+        res.render("ticket", { newTicket ,user});
     } catch (error) {
         req.logger.error(error);
         res.status(error.status).send(error.message);

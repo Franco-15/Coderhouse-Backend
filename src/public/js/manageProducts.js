@@ -13,7 +13,6 @@ async function getProducts() {
 function updateProduct(pid) {
     let updateProductForm = document.getElementById(`updateProductForm`);
     const updateProductButton = document.getElementById("updateProductButton");
-    console.log(updateProductForm);
 
     if (updateProductForm)
         updateProductButton.onclick = async (e) => {
@@ -44,7 +43,6 @@ function updateProduct(pid) {
 
 function deleteProduct(pid) {
     let product = document.getElementById(`deleteProduct-${pid}`);
-    console.log(product);
     if (product)
         product.onclick = async (e) => {
             e.preventDefault();

@@ -56,7 +56,6 @@ function deleteProductFromCart(cid, pid) {
                 },
             })
             const result = await response.json();
-            console.log(result);
             if (result.status === "error") {
                 Swal.fire({
                     icon: "error",
@@ -108,7 +107,6 @@ const finalizePurchase = (cid, products) => {
                     });
                     window.location.href = "/payment";
                 } catch (error) {
-                    console.log(error);
                     Swal.fire({
                         icon: "error",
                         title: "Error al Finalizar la compra",

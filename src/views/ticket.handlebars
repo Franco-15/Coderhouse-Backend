@@ -15,7 +15,7 @@
                     {{/if}}
                     {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Carrito</a>
+                        <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
                     </li>
                     {{/if}}
                     <li class="nav-item">
@@ -36,7 +36,7 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link"href="/cart/{{user.cartId}}">Carrito</a>
+                <a class="nav-link" href="/cart/{{user.cartId}}">Carrito</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" aria-disabled="true">Pago</a>
@@ -46,31 +46,20 @@
             </li>
         </ul>
     </div>
-    <div class="container" style="width: 100vw">
-    <h1>Pedido confirmado</h1>
-    <p>¡Gracias por tu compra! Aquí tienes los detalles de tu pedido:</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each ticket.cart}}
-            <tr>
-                <td>{{this.products.title}}</td>
-                <td>{{this.quantity}}</td>
-                <td>${{this.products.price}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    <div>
+        <h1>Pedido confirmado</h1>
+        <p>¡Gracias por tu compra! Aquí tienes los detalles de tu pedido:</p>
+        <div class="d-flex justify-content-start flex-column d-flex align-items-center"
+            style="text-align: start;">
+            <ul style="list-style: none;">
+                <li>Codigo: {{newTicket.code}}</li>
+                <li>Fecha: {{newTicket.purchase_datetime}}</li>
+                <li>Comprador: {{newTicket.purchaser}}</li>
+            </ul>
 
-    <p>Total a pagar: ${{ticket.amount}}</p>
-
-    <p>¡Gracias por tu compra!</p>
+            <p>Total a pagar: ${{newTicket.amount}}</p>
+        </div>
+        <p>¡Gracias por tu compra!</p>
     </div>
 </div>
 

@@ -27,7 +27,7 @@ export const sendRestoreEmail = async (req, res) => {
           <div>
             <h1>Ecommerce de Bebidas</h1>
             <p>Para restaurar tu contraseña, hace click en el siguiente link</p>
-            <a href="http://localhost:8080/changePassword">
+            <a href="/changePassword">
             <button>Restaurar Contraseña</button>
             </a>
           </div>

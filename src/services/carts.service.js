@@ -109,11 +109,8 @@ class CartsService {
             };
 
             let newTicket = await ticketsService.createTicket(ticketData);
-            console.log(newTicket);
-            console.log(user);
-            console.log(cart);
             const emailData = {
-                to: "francomante1510@gmail.com",
+                to: user.email,
                 subject: "Ticket de compra",
                 html: `<!DOCTYPE html>
                 <html lang="en">

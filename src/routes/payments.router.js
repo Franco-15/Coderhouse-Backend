@@ -51,7 +51,6 @@ paymentsRouter.post("/", passport.authenticate("jwt", { session: false }), autho
         });
     }
     catch (error) {
-        console.log(error);
         res.status(error.status).send(error.message);
     }
 });

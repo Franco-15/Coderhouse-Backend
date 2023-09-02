@@ -7,7 +7,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse p-2" id="navbarNav">
-                <ul class="navbar-nav ms-auto d-flex align-items-center">
+                <ul class="navbar-nav ms-auto d- flex-row justify-direction-start align-items-center">
                     {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
                     <li class="nav-item">
                         <a href="/manageProducts" class="nav-link">Administrar Productos</a>
@@ -32,38 +32,66 @@
         </div>
     </nav>
 </header>
-<h1 style="margin: 20px;">Carrito</h1>
-<ul style="list-style: none;" class="d-flex flex-row mb-3 flex-wrap">
-    {{#each cart.products}}
-    <li>
-        <div id={{this.product._id}} class="card m-2 p-2 " style="width: 18rem;">
-            <img src="" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{this.product.title}}</h5>
-                <p class="card-text">{{this.product.description}}</p>
-                <br>
-                <p class="card-text">Código: {{this.product.code}}</p>
-                <p class="card-text">Categoría: {{this.product.category}}</p>
-                <p class="card-text">Precio: ${{this.product.price}}</p>
-                <p class="card-text">Stock: {{this.product.stock}}</p>
-                <p class="card-text">Cantidad: {{this.quantity}}</p>
-                <br>
-                <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}"
-                    class="btn btn-danger">Quitar</button>
+{{#if cart.isEmpty}}
+<h1>No hay productos en el carrito</h1>
+{{else}}
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="true" href="#">Carrito</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" aria-disabled="true">Pago</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" aria-disabled="true">Ticket</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="card">
+            <ul class="list-group list-group-flush" style="list-style: none;">
+                {{#each cart.products}}
+                <li style="border-bottom-style: groove; border-width: 5px;">
+                    <div id={{this.product._id}} class="container text-center">
+                        <div class="row">
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <img src="" class="card-img-top" alt="...">
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <h5>{{this.product.title}}</h5>
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <p>Precio: ${{this.product.price}}</p>
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <p>Cantidad: {{this.quantity}}</p>
+                            </div>
+                            <div class="col d-flex justify-content-center align-items-center">
+                                <button id="deleteProduct{{this.product._id}}-Cart{{../cart._id}}"
+                                    class="btn btn-danger">Quitar</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            <div class="card-footer d-flex flex-row justify-content-start m-2">
+                <h5>Total: ${{cart.total}}</h5>
+            </div>
+            <div class="d-flex flex-row justify-content-start m-2">
+                <a href="/products">
+                    <button class="btn btn-primary m-1">Seguir comprando</button>
+                </a>
+                <button id="clear-cart-{{cart._id}}" class="btn btn-warning m-1">Vaciar carrito</button>
+                <button id="finalize-{{cart._id}}" class="btn btn-success m-1">Finalizar Compra</button>
             </div>
         </div>
-    </li>
-    {{/each}}
-</ul>
-<div class="m-2">
-    <a href="/products">
-        <button class="btn btn-primary">Seguir comprando</button>
-    </a>
-    <button id="clear-cart" class="btn btn-warning">Vaciar carrito</button>
-    <a href="/api/carts/{{cart._id}}/purchase">
-        <button class="btn btn-success">Finalizar compra</button>
-    </a>
+    </div>
 </div>
+{{/if}}
 
-<script src="/js/products.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/cart.js"></script>
 <script src="/js/logout.js"></script>

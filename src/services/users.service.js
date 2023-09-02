@@ -2,6 +2,10 @@ import { usersRepository } from "../repositories/index.js";
 import DTOUSer from "../dao/dto/user.dto.js";
 import { createHash } from "../utils/utils.js";
 import { sendMail } from "../utils/email.js";
+import jwt from "jsonwebtoken";
+import config from "../config/config.js";
+
+const { jwtSecret } = config;
 
 class UsersService {
     constructor() { }
@@ -106,6 +110,15 @@ class UsersService {
         try {
             const userDeleted = await usersRepository.deleteUser(id);
             return userDeleted;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    decodeUserFromToken(token) {
+        try {
+            const decoded = jwt.verify(token, jwtSecret, { ignoreExpiration: true });
+            return decoded;
         } catch (error) {
             throw error;
         }

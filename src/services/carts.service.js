@@ -2,9 +2,10 @@ import Exception from "../exceptions.js";
 import { cartsRepository } from "../repositories/index.js";
 import productsService from "./products.service.js";
 import ticketsService from "./tickets.service.js";
+import { sendMail } from "../utils/email.js";
 
 class CartsService {
-    constructor() {}
+    constructor() { }
 
     async getCartByID(cid) {
         try {
@@ -90,64 +91,63 @@ class CartsService {
             const getProducts = await productsService.getProducts();
             const dbProducts = getProducts.payload;
             const cartProducts = cart.products;
-            let productsWithouStock = [];
 
-            if (cartProducts.length === 0)
-                throw new Exception(400, {
-                    status: "error",
-                    message: "Purchase not completed. Cart is empty",
-                });
             cartProducts.forEach(async (cartProduct) => {
                 let dbProduct = dbProducts.find(
                     (product) =>
-                        product._id.toString() ===
+                        product.id ===
                         cartProduct.product._id.toString()
                 );
-                if (dbProduct.stock < cartProduct.quantity)
-                    productsWithouStock.push(
-                        cartProduct.product._id.toString()
-                    );
+                await productsService.updateProduct(dbProduct.id, {
+                    stock: dbProduct.stock - cartProduct.quantity,
+                });
             });
-            if (productsWithouStock.length > 0) {
-                let newProductsCart = cartProducts.filter(
-                    (cartProduct) =>
-                        !productsWithouStock.includes(
-                            cartProduct.product._id.toString()
-                        )
-                );
 
-                const cartUpdated = await cartsRepository.updateCart(
-                    cid,
-                    newProductsCart
-                );
-                throw new Exception(400, {
-                    status: "error",
-                    message:
-                        "Purchase not completed .There are products without stock",
-                    payload: productsWithouStock,
-                });
-            } else {
-                cartProducts.forEach(async (cartProduct) => {
-                    let dbProduct = dbProducts.find(
-                        (product) =>
-                            product._id.toString() ===
-                            cartProduct.product._id.toString()
-                    );
-                    await productsService.updateProduct(dbProduct.id, {
-                        quantity: cartProduct.quantity * -1,
-                    });
-                });
+            const ticketData = {
+                cart: cart,
+                user: user,
+            };
 
-                const ticketData = {
-                    cart: cart,
-                    user: user,
-                };
+            let newTicket = await ticketsService.createTicket(ticketData);
+            console.log(newTicket);
+            console.log(user);
+            console.log(cart);
+            const emailData = {
+                to: "francomante1510@gmail.com",
+                subject: "Ticket de compra",
+                html: `<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Confirmación de Compra</title>
+                </head>
+                <body>
+                    <div style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; text-align: center;">
+                        <h1 style="color: #333;">¡Gracias por su compra!</h1>
+                        <p style="color: #555;">El total de su compra es de $${newTicket.amount}</p>
+                        <p style="color: #555;">El ticket de su compra es el siguiente:</p>
+                        <ul style="list-style-type: none; padding: 0;">
+                            <li style="margin: 10px 0; color: #555;">Código: ${newTicket.code}</li>
+                            <li style="margin: 10px 0; color: #555;">Fecha: ${newTicket.purchase_datetime}</li>
+                            <li style="margin: 10px 0; color: #555;">Total: $${newTicket.amount}</li>
+                            <li style="margin: 10px 0; color: #555;">Productos:
+                                <ul style="list-style-type: none; padding: 0;">
+                                    ${cart.products.map(
+                    (product) =>
+                        `<li style="margin: 5px 0; color: #555;">${product.product.title} - ${product.quantity} unidades</li>`
+                ).join("")}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </body>
+                </html>`
 
-                const newTicket = await ticketsService.createTicket(ticketData);
-                await cartsRepository.deleteAllProducts(cid);
-
-                return newTicket;
-            }
+            };
+            await sendMail(emailData);
+            await cartsRepository.deleteAllProducts(cid);
+            return newTicket;
         } catch (error) {
             throw error;
         }

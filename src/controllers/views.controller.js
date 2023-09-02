@@ -1,5 +1,6 @@
 import viewsService from "../services/views.service.js";
 import usersService from "../services/users.service.js";
+import ticketsService from "../services/tickets.service.js";
 
 export async function viewProducts(req, res) {
     const { limit, page, sort, category, status } = req.query;
@@ -37,7 +38,6 @@ export async function viewCart(req, res) {
 
     try {
         const cart = await viewsService.viewCart(cid);
-
         if (cart) {
             res.render("cart", {
                 cart: cart,
@@ -130,7 +130,7 @@ export function viewLogger(req, res) {
 
 export async function viewUser(req, res) {
     const { user } = req.user;
-    
+
     try {
         const userGetted = await usersService.getUserById(user.id);
         if (!userGetted) {
@@ -180,6 +180,35 @@ export async function viewChangePassword(req, res) {
 export function viewForgotPassword(req, res) {
     try {
         res.render("forgotPass");
+    } catch (error) {
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
+    }
+}
+
+export function viewPayment(req, res) {
+    const { user } = req.user;
+    try {
+        res.render("payment", { user });
+    } catch (error) {
+        req.logger.error(error);
+        res.status(error.status).send(error.message);
+    }
+}
+
+export async function viewTicket(req, res) {
+    const { user } = req.user;
+    const { tid } = req.params;
+
+    try {
+        const ticket = await ticketsService.getTicketByID(tid);
+        if (!ticket) {
+            return res.status(404).send({
+                status: "error",
+                message: `Error getting ticket with id: ${tid}`,
+            });
+        }
+        res.render("ticket", { user, ticket });
     } catch (error) {
         req.logger.error(error);
         res.status(error.status).send(error.message);

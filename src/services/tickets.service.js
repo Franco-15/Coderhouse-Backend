@@ -11,7 +11,7 @@ class TicketsService {
                 return acc + product.product.price * product.quantity;
             }, 0);
 
-            const purchaser = user.user.email;
+            const purchaser = user.email;
             
             const ticket = {
                 code: code,

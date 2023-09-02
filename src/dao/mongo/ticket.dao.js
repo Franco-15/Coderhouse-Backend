@@ -28,10 +28,12 @@ class Ticket {
 
     async getTicketByID(cid) {
         try {
-            const ticketFromID = await ticketModel
-                .findById(cid)
-                .populate("products.product")
-                .lean();
+            console.log(cid);
+            const ticketFromID = await ticketModel.findOne(
+                { _id: cid },
+            );
+
+            console.log(ticketFromID);
             return ticketFromID;
         } catch (error) {
             throw new Exception(404, {

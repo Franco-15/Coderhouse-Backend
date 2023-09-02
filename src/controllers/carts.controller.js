@@ -33,7 +33,6 @@ export async function addProduct(req, res) {
     const { quantity } = req.body;
     const user = req.user;
     try {
-        console.log(quantity);
         const productToAdd = await productsService.getProductById(pid);
         if (productToAdd.owner === user.id || productToAdd.owner === user.email)
             res.status(403).send({
@@ -120,7 +119,7 @@ export async function updateCart(req, res) {
 
 export async function purchase(req, res) {
     const cid = req.params.cid;
-    const user = req.user;
+    const {user} = req.user;
     try {
         const completedPurchase = await cartsService.purchase({ cid, user });
         res.status(200).send({

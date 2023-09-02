@@ -1,0 +1,72 @@
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/products">Ecommerce</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse p-2" id="navbarNav">
+                <ul class="navbar-nav ms-auto d- flex-row justify-direction-start align-items-center">
+                    {{#if (or (isEquals user.role "admin") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a href="/manageProducts" class="nav-link">Administrar Productos</a>
+                    </li>
+                    {{/if}}
+                    {{#if (or (isEquals user.role "user") (isEquals user.role "premium"))}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Carrito</a>
+                    </li>
+                    {{/if}}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/messages">Chat</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/user" class="nav-link">Mi Cuenta</a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logout" type="button" class="btn btn-danger">Cerrar Sesion</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<span id="cid" hidden>{{user.cartId}}</span>
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link"href="/cart/{{user.cartId}}">Carrito</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Pago</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Ticket</a>
+            </li>
+        </ul>
+    </div>
+    <div class="container" style="width: 100vw">
+
+        <div id="payment-body" style="width: 100%; height: 60vh">
+            <form id="payment-form">
+                <div id="link-authentication-element">
+                    <!--Stripe.js injects the Link Authentication Element-->
+                </div>
+                <div id="payment-element">
+                    <!--Stripe.js injects the Payment Element-->
+                </div>
+                <button id="payment-submit">
+                    <div class="spinner hidden" id="spinner"></div>
+                    <span id="button-text">Pay now</span>
+                </button>
+                <div id="payment-message" class="hidden"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/payment.js"></script>
+<script src="/js/logout.js"></script>

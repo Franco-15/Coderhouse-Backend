@@ -2,7 +2,7 @@ import productsService from "./products.service.js";
 import cartsService from "./carts.service.js";
 
 class ViewsService {
-    constructor() {}
+    constructor() { }
 
     async viewProducts(limit, page, sort, category, status) {
         try {
@@ -37,6 +37,14 @@ class ViewsService {
     async viewCart(cid) {
         try {
             const cart = await cartsService.getCartByID(cid);
+            let total = 0;
+            if (cart.products.length === 0)
+                cart.isEmpty = true;
+            else
+                cart.products.forEach((product) => {
+                    total += product.product.price * product.quantity;
+                });
+            cart.total = total;
             return cart;
         } catch (error) {
             throw error;

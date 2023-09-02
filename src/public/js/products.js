@@ -50,26 +50,6 @@ function addProductToCart(cid, product) {
         };
 }
 
-function deleteProductFromCart(cid, pid) {
-    let product = document.getElementById(`deleteProduct${pid}-Cart${cid}`);
-
-    if (product)
-        product.onclick = async (e) => {
-            e.preventDefault();
-            const response = await fetch(`/api/carts/${cid}/product/${pid}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
-            const result = await response.json();
-            console.log(result);
-            if (result.status === "error") {
-                alert(result.message);
-            }
-        };
-}
-
 const main = async () => {
     let products = await getProducts();
     let users = await getUsers();
@@ -80,7 +60,6 @@ const main = async () => {
 
     products.payload.forEach((product) => {
         usersId.forEach((cid) => {
-            deleteProductFromCart(cid, product.id);
             addProductToCart(cid, product);
         });
     });

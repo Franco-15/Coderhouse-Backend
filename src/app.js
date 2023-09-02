@@ -28,8 +28,9 @@ app.engine("handlebars", handlebars.engine({
         and,
         or
     },
+    defaultLayout: "main",
 }));
-app.set("views",  path.join(_dirname, '../views'));
+app.set("views",  _dirname + '/views');
 app.set("view engine", "handlebars");
 
 //==== Cookies ====
@@ -40,7 +41,7 @@ app.use(passport.initialize());
 initializePassport();
 
 //==== Static files ====
-app.use(express.static(path.join(_dirname, '../public')));
+app.use(express.static(_dirname + '/public'));
 
 //==== Routes ====
 routerApi(app);

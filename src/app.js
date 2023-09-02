@@ -10,6 +10,7 @@ import routerApi from "./routes/router.js";
 import { logger_init } from "./utils/logger.js";
 import { sendRestoreEmail } from "./utils/restorePassword.js";
 import { isEquals, isNotEquals, and, or } from "./utils/helpers.js";
+import path from "path";
 
 const app = express();
 
@@ -28,7 +29,8 @@ app.engine("handlebars", handlebars.engine({
         or
     },
 }));
-app.set("views", `${_dirname}\\views`);
+console.log(path.join(_dirname, '/views'));
+app.set("views",  path.join(_dirname, '/views'));
 app.set("view engine", "handlebars");
 
 //==== Cookies ====
@@ -39,7 +41,7 @@ app.use(passport.initialize());
 initializePassport();
 
 //==== Static files ====
-app.use(express.static(`${_dirname}\\public`));
+app.use(express.static(path.join(_dirname, '/public')));
 
 //==== Routes ====
 routerApi(app);

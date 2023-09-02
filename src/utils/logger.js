@@ -32,7 +32,7 @@ const productionTransport = [
         level: "info",
     }),
     new winston.transports.File({
-        filename: `${__dirname}/../logs/errors.log`,
+        filename: `${__dirname}/../errors.log`,
         level: "info",
     }),
 ];

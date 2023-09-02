@@ -28,7 +28,7 @@ app.engine("handlebars", handlebars.engine({
         or
     },
 }));
-app.set("views", `${_dirname}/views`);
+// app.set("views", `${_dirname}/views`);
 app.set("view engine", "handlebars");
 
 //==== Cookies ====
